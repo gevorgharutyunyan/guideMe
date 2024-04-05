@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="profile-container">
+
+    <a href="{% url 'users:edit_profile' %}">Edit Profile</a>
+
+    <!-- Profile Details -->
+    <div class="profile-details">
+        <h2>About</h2>
+        <p><strong>Biography:</strong> {{ user.profile.bio }}</p>
+        {% if user.profile.is_guide %}
+            <p><strong>Experience:</strong> {{ user.profile.experience }}</p>
+            <p><strong>Rating:</strong> {{ user.profile.rating }}</p>
+        {% endif %}
+    </div>
+
+    <!-- Conditional Sections for Guides and Tourists -->
+    {% if user.profile.is_guide %}
+    <a href="{% url 'tours:bookings_of_guide' %}">Who has booked?</a>
+        <div class="guide-section">
+            <h2>My Tours</h2>
+            {% for tour in user.profile.tours.all %}
+                <div class="tour">
+                    <h3>{{ tour.title }}</h3>
+                    <p>{{ tour.description }}</p>
+                    <p>Price: ${{ tour.price }}</p>
+                    <p>Duration: {{ tour.duration }} hours</p>
+                    <!-- Add more details here -->
+                </div>
+            {% empty %}
+                <p>No tours listed yet.</p>
+            {% endfor %}
+        </div>
+    {% else %}
+        <a href="{% url 'tours:tourist_bookings' %}">My Bookings</a>
+        <div class="tourist-section">
+            <h2>My Bookings</h2>
+            {% for booking in user.profile.bookings.all %}
+                <div class="booking">
+                    <h3>{{ booking.tour.title }}</h3>
+                    <p>Booked for: {{ booking.booking_date }}</p>
+                    <!-- Add more details here -->
+                </div>
+            {% empty %}
+                <p>No bookings made yet.</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

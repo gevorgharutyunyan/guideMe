@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to GuideMe!</title>
+    <link rel="stylesheet" href="{% static 'css/welcome_page.css' %}">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="{% url 'home' %}" class="logo">
+                <img src="{% static 'img/logo.jpg' %}" alt="GuideMe Logo">
+            </a>
+            <div class="nav-links">
+                {% if user.is_authenticated %}
+                    {% if user.profile.is_guide %}
+                        <a href="{% url 'tours:guides_dashboard' %}">Manage My Tours</a>
+                    <!-- Other guide-specific links -->
+                     {% else %}
+                        <a href="{% url 'tours:discover' %}">Discover Tours</a>
+                    <!-- Other tourist-specific links -->
+                     {% endif %}
+                    <a href="news">News</a>
+                    <a href="map">Map</a>
+                {% endif %}
+            </div>
+            <div class="auth-links">
+            {% if user.is_authenticated %}
+                <a href="{% url 'users:profile' user.username %}">
+                    {% if user.is_authenticated %}
+                        <div class="user-profile">
+                            {% if user.profile.image %}
+                                <img src="{{ user.profile.image.url }}" alt="{{ user.username }}'s profile" class="profile-icon">
+                            {% else %}
+                                <img src="{% static 'img/user.png' %}" alt="Default profile" class="profile-icon">
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </a>
+                <a href="{% url 'users:logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'users:login' %}">Log In</a>
+                <a href="{% url 'users:register' %}">Get Started</a>
+            {% endif %}
+            </div>
+        </nav>
+    </header>
+    <main class="hero">
+        <h1>You could earn €5,614 per month in Armenia</h1>
+        <p>Publishing your activity on GuideMe is free and easy.</p>
+        <ul class="benefits">
+            <li>Instant review: get approved in seconds and start earning</li>
+            <li>No hidden fees: commission paid on successful bookings only</li>
+            <li>24/7 support: we are always here for you and your customers</li>
+            <li>International reach: millions of travelers in 190+ countries</li>
+        </ul>
+        <a href="{% url 'users:register' %}" class="btn-get-started">Get started</a>
+    </main>
+    <section class="steps">
+        <div class="step">
+            <span class="step-number">1</span>
+            <p>Register with us</p>
+        </div>
+        <div class="step">
+            <span class="step-number">2</span>
+            <p>Create your activity</p>
+        </div>
+        <div class="step">
+            <span class="step-number">3</span>
+            <p>Start earning</p>
+        </div>
+    </section>
+    <!-- Add your site footer here -->
+    <footer>
+    </footer>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- User profile details -->
+{% for booking in booked_tours %}
+    <div class="booking">
+        <h3>{{ booking.tour.title }}</h3>
+        <p>Booked for: {{ booking.booking_date }}</p>
+    </div>
+{% empty %}
+    <p>No bookings made yet.</p>
+{% endfor %}
+{% endblock %}

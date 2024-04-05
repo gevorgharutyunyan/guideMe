@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <title>GuideMe</title>
+    <!-- Include your CSS files here -->
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="left-nav">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'home' %}">
+                        <img src="{% static 'img/logo.jpg' %}" alt="GuideMe Logo" style="height: 50px;">
+                    </a>
+                <!-- Other tourist-specific links -->
+                    <a href="{% url 'users:profile' user.username %}">Profile</a>
+                    <a href="{% url 'users:logout' %}" style="float:right;">Logout</a>
+                {% endif %}
+            </div>
+
+        </nav>
+    </header>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+    <footer>
+        <!-- Footer content here -->
+    </footer>
+</body>
+</html>

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Search and Filters -->
+<div class="search-filters">
+    <!-- Implement search and filter form -->
+</div>
+
+<!-- All Tours -->
+<div class="all-tours">
+    <h2>All Tours</h2>
+    {% for tour in tours %}
+    <div class="tour">
+        <h3>{{ tour.title }}</h3>
+        <p>{{ tour.description }}</p>
+        <a href="{% url 'tours:book_tour' tour.id %}">Book</a>
+
+        <!-- Display Reviews for Each Tour -->
+        <div class="tour-reviews">
+            <h4>Reviews</h4>
+            <a href="{% url 'tours:add_review' tour.id  %}">Add Review</a>
+            {% for review in tour.reviews.all %}
+                <div class="review">
+                    <strong>{{ review.author.user.username }}</strong> <!-- Adjust based on your user model relationship -->
+                    <p>Rating: {{ review.rating }}</p>
+                    <p>{{ review.content }}</p>
+                </div>
+            {% empty %}
+                <p>No reviews yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #fff;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    background: #ffffff;
+}
+
+.logo img {
+    height: 50px; /* Adjust to match the desired size */
+}
+
+.nav-links a,
+.auth-links a {
+    text-decoration: none;
+    color: #007bff;
+    margin-left: 15px;
+    padding: 5px 10px;
+}
+
+.nav-links a:hover,
+.auth-links a:hover {
+    text-decoration: underline;
+}
+
+.profile-icon {
+    height: 30px; /* Adjust to match the desired size */
+    width: auto;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.auth-links {
+    display: flex;
+    align-items: center;
+}
+
+/* Additional styles for your main content */
+.hero {
+    padding: 50px 20px;
+    text-align: center;
+}
+
+/* Rest of your CSS for the welcome page */

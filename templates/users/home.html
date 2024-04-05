@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Welcome, {{ request.user.username }}!</h1>
+
+{% if user.userprofile.is_guide %}
+    <h2>My Tours</h2>
+    {% for tour in my_tours %}
+        <div>
+            <h3>{{ tour.title }}</h3>
+            <p>{{ tour.description }}</p>
+            <!-- Add more details and a link to edit the tour -->
+        </div>
+    {% endfor %}
+{% else %}
+    <h2>Available Tours</h2>
+    {% for tour in available_tours %}
+        <div>
+            <h3>{{ tour.title }}</h3>
+            <p>{{ tour.description }}</p>
+            <!-- Add more details and a link to book the tour -->
+        </div>
+    {% endfor %}
+{% endif %}
+
+{% endblock %}
