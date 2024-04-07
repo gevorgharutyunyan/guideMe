@@ -7,10 +7,14 @@ body, html {
 
 .navbar {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
-    background: #ffffff;
+    align-items: center;
+    padding: 0 15px; /* Add some padding on the sides */
+}
+
+.navbar-section {
+    display: flex;
+    align-items: center;
 }
 
 .logo img {
