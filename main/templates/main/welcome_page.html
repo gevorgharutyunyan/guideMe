@@ -1,20 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Tourism Platform{% endblock title %}
+
+{% block extra_styles %}
+    {{ block.super }}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'css/welcome_page.css' %}">
+{% endblock extra_styles %}
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <title>Tourism Platform</title>
-</head>
-<body>
-
-    <nav class="container-fluid navbar">
+{% block content %}
+  <nav class="container-fluid navbar">
 
         <div class="navbar-section navbar-logo">
             <a href="{% url 'home' %}">
@@ -22,11 +18,12 @@
             </a>
         </div>
 
-
-        <!-- The Modal -->
-
         <div class="navbar-section navbar-links">
-            <a href="{% url 'tours:discover' %}">Discover Tours</a>
+             <form action="{% url 'tours:discover' %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="logout-button">Discover Tours</button>
+            </form>
+
         </div>
 
         {% if  not user.is_authenticated %}
@@ -55,6 +52,7 @@
               <div class="modal-footer">
                 <button type="submit" form="loginForm" class="btn btn-primary">Login</button>
                 <button type="submit" form="registerForm" class="btn btn-secondary">Sign Up</button>
+                 <button type="submit"> <a href="{% url 'socialaccount_signup' %}">Sign Up with Gmail</a></button>
                <!-- <button type="submit" form="registerForm" class="btn btn-secondary">Log In with Gmail</button> -->
               </div>
             </div>
@@ -66,7 +64,10 @@
         </div>
 
         {% else %}
-            <a href="{% url 'users:logout' %}">Log Out</a>
+         <form action="{% url 'users:logout' %}" method="post" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" class="logout-button">Logout</button>
+        </form>
         {% endif %}
 
 
@@ -89,7 +90,6 @@
     </main>
     <section aria-label="Login or Register">
         <div class="container">
-            <article>
                 <hgroup>
                     <h2>Join Us</h2>
                     <h3>Start your journey</h3>
@@ -99,13 +99,12 @@
                     <input type="email" id="email" name="email" placeholder="Email" aria-label="Email" required />
                     <a href="{% url 'users:register' %}" style="float:right;">Sign Up</a>
                 </form>
-            </article>
         </div>
     </section>
-    <footer class="container">
-        <small>
-            <a href="#">Privacy Policy</a> • <a href="#">Terms of Use</a>
-        </small>
-    </footer>
-</body>
-</html>
+{% endblock content %}
+
+{% block extra_scripts %}
+    {{ block.super }}
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{% endblock extra_scripts %}

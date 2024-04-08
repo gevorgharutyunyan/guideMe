@@ -4,6 +4,10 @@
 <div class="profile-container">
 
     <a href="{% url 'users:edit_profile' %}">Edit Profile</a>
+     <form action="{% url 'users:logout' %}" method="post" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" class="logout-button">Logout</button>
+    </form>
 
     <!-- Profile Details -->
     <div class="profile-details">

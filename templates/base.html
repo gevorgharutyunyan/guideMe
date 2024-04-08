@@ -6,10 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
     <title>GuideMe</title>
-    <!-- Include your CSS files here -->
+    <title>{% block title %}GuideMe{% endblock %}</title>
+
+    {% block extra_styles %}
+      <!-- Welcome Page Html content -->
+    {% endblock %}
+
 </head>
 <body>
-    <header>
         <nav>
             <div class="left-nav">
                 {% if user.is_authenticated %}
@@ -18,18 +22,17 @@
                     </a>
                 <!-- Other tourist-specific links -->
                     <a href="{% url 'users:profile' user.username %}">Profile</a>
-                    <a href="{% url 'users:logout' %}" style="float:right;">Logout</a>
                 {% endif %}
             </div>
-
         </nav>
-    </header>
-    <main>
         {% block content %}
+         <!-- Main content of all html pages which extends from base.html -->
         {% endblock %}
-    </main>
     <footer>
         <!-- Footer content here -->
     </footer>
 </body>
+{% block extra_scripts %}
+<!-- Content for java script sources(src)-->
+{% endblock %}
 </html>
