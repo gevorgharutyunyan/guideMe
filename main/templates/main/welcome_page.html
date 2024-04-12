@@ -4,107 +4,23 @@
 
 {% block extra_styles %}
     {{ block.super }}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/welcome_page.css' %}">
+    <!-- Additional CSS files can be added here if needed -->
 {% endblock extra_styles %}
 
 {% block content %}
-  <nav class="container-fluid navbar">
-
-        <div class="navbar-section navbar-logo">
-            <a href="{% url 'home' %}">
-                <img src="{% static 'img/new_logo.webp' %}" alt="GuideMe Logo" style="width: 50px; height: auto;">
-            </a>
-        </div>
-
-        <div class="navbar-section navbar-links">
-             <form action="{% url 'tours:discover' %}" method="post" style="display: inline;">
-                {% csrf_token %}
-                <button type="submit" class="logout-button">Discover Tours</button>
-            </form>
-
-        </div>
-
-        {% if  not user.is_authenticated %}
-        <div class="modal fade" id="authModal" tabindex="-1" role="dialog" aria-labelledby="authModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="authModalLabel">Login or Register</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-
-                <!-- Login Form -->
-                <form id="loginForm" method="post" action="{% url 'users:login' %}">
-                  {% csrf_token %}
-                </form>
-                <hr>
-                <!-- Registration Form -->
-                <form id="registerForm" method="post" action="{% url 'users:register' %}">
-                  {% csrf_token %}
-                  <!-- Your registration fields here -->
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button type="submit" form="loginForm" class="btn btn-primary">Login</button>
-                <button type="submit" form="registerForm" class="btn btn-secondary">Sign Up</button>
-                 <button type="submit"> <a href="{% url 'socialaccount_signup' %}">Sign Up with Gmail</a></button>
-               <!-- <button type="submit" form="registerForm" class="btn btn-secondary">Log In with Gmail</button> -->
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="navbar-section navbar-auth">
-            <a href="#" role="button" data-toggle="modal" data-target="#authModal">Login</a>
-        </div>
-
-        {% else %}
-         <form action="{% url 'users:logout' %}" method="post" style="display: inline;">
-        {% csrf_token %}
-        <button type="submit" class="logout-button">Logout</button>
-        </form>
-        {% endif %}
-
-
-    </nav>
-
-    <main class="container">
-        <div class="grid">
-            <section>
-                <hgroup>
-                    <h2>Explore the World</h2>
-                    <h3>Your adventure starts here</h3>
-                </hgroup>
-                <p>Welcome to our tourism platform where adventure awaits at every corner. Browse through a wide range of tours, find your perfect match, and start your journey!</p>
-                <figure>
-                    <img src="{% static 'img/web_page_image.webp' %}"  alt="Adventure and Exploration">
-                    <figcaption>An exciting journey awaits.</figcaption>
-                </figure>
-            </section>
-        </div>
-    </main>
-    <section aria-label="Login or Register">
-        <div class="container">
-                <hgroup>
-                    <h2>Join Us</h2>
-                    <h3>Start your journey</h3>
-                </hgroup>
-                <form class="grid">
-                    <input type="text" id="firstname" name="firstname" placeholder="First Name" aria-label="First Name" required />
-                    <input type="email" id="email" name="email" placeholder="Email" aria-label="Email" required />
-                    <a href="{% url 'users:register' %}" style="float:right;">Sign Up</a>
-                </form>
-        </div>
-    </section>
+<main class="container">
+    <div class="grid">
+        <section>
+            <hgroup>
+                <h2>Explore the World</h2>
+                <h3>Your adventure starts here</h3>
+            </hgroup>
+            <p>Welcome to our tourism platform where adventure awaits at every corner. Browse through a wide range of tours, find your perfect match, and start your journey!</p>
+            <figure>
+                <img src="{% static 'img/web_page_image.webp' %}" alt="Adventure and Exploration">
+                <figcaption>An exciting journey awaits.</figcaption>
+            </figure>
+        </section>
+    </div>
+</main>
 {% endblock content %}
-
-{% block extra_scripts %}
-    {{ block.super }}
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-{% endblock extra_scripts %}

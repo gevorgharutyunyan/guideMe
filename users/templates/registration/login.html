@@ -1,10 +1,9 @@
-{% extends "base.html" %}
 {% block content %}
     <h2>Login</h2>
     <form method="POST" action="{% url 'users:login' %}">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Login</button>
+        <a href="{% url 'account_login' %}">Login with Gmail</a>
     </form>
-    <a href="{% url 'google_login' %}">Login with Gmail</a>
 {% endblock %}

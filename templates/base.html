@@ -5,34 +5,90 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-    <title>GuideMe</title>
     <title>{% block title %}GuideMe{% endblock %}</title>
-
-    {% block extra_styles %}
-      <!-- Welcome Page Html content -->
-    {% endblock %}
-
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    {% block extra_styles %}{% endblock %}
 </head>
 <body>
-        <nav>
-            <div class="left-nav">
-                {% if user.is_authenticated %}
-                    <a href="{% url 'home' %}">
-                        <img src="{% static 'img/logo.jpg' %}" alt="GuideMe Logo" style="height: 50px;">
-                    </a>
-                <!-- Other tourist-specific links -->
-                    <a href="{% url 'users:profile' user.username %}">Profile</a>
-                {% endif %}
+    <nav>
+        <!-- Navbar content -->
+        {% if user.is_authenticated %}
+            <div>Welcome, {{ user.username }}!</div>
+            <a href="{% url 'users:profile' user.username %}">Profile</a>
+            <form action="{% url 'users:logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+        {% else %}
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">Login</button>
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#registerModal">Register</button>
+        {% endif %}
+    </nav>
+
+    {% block content %}
+    {% endblock %}
+
+    <!-- Login Modal
+    <div class="modal" id="loginModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                {% include 'registration/login.html' %}
             </div>
-        </nav>
-        {% block content %}
-         <!-- Main content of all html pages which extends from base.html -->
-        {% endblock %}
-    <footer>
-        <!-- Footer content here -->
-    </footer>
+        </div>
+    </div> -->
+
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginModalLabel">Login to Your Account</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="{% url 'users:login' %}">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="username">Username or Email:</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="Enter username or email" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Log In</button>
+        </form>
+        <div class="text-center mt-2">
+          <p>or</p>
+          <a href="{% url 'google_login' %}" class="btn btn-danger">Log In with Gmail</a>
+        </div>
+        <!--<div>
+        <p>Or use a third-party service to sign in:</p>
+            <a href="{% url 'google_login' %}">Continue with Google</a>
+        </div>-->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <!-- Register Modal -->
+    <div class="modal" id="registerModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                {% include 'registration/user_type_selection.html' %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.7.16/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    {% block extra_scripts %}
+
+    {% endblock extra_scripts %}
 </body>
-{% block extra_scripts %}
-<!-- Content for java script sources(src)-->
-{% endblock %}
 </html>

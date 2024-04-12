@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Welcome, {{ request.user.username }}!</h1>
 
 {% if user.userprofile.is_guide %}
     <h2>My Tours</h2>

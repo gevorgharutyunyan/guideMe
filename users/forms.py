@@ -6,12 +6,10 @@ from .models import UserProfile
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
-    is_tourist = forms.BooleanField(required=False)
-    is_guide = forms.BooleanField(required=False)
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2', 'is_tourist', 'is_guide']
+        fields = ['username', 'email', 'password1', 'password2']
 
 class UserProfileForm(forms.ModelForm):
     class Meta:

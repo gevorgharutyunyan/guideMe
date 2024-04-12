@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-6m44_7a%p$7t*=jwkk-)(0+6r9m^_qb_np+1br26l_6)(n!y&d
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -156,7 +156,7 @@ AUTHENTICATION_BACKENDS = (
     # ...
 )
 
-SITE_ID = 1
+SITE_ID = 2
 
 # Add allauth configuration
 ACCOUNT_AUTHENTICATION_METHOD = 'email'

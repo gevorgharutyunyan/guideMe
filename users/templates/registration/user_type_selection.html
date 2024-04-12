@@ -1,0 +1,16 @@
+{% block content %}
+    <h2>Are you a tourist or a guide?</h2>
+    <form method="POST" action="{% url 'users:choose_user_type' %}">
+        {% csrf_token %}
+        <div>
+            <input type="radio" name="user_type" id="is_tourist" value="tourist" required>
+            <label for="is_tourist">Register as a Tourist</label>
+        </div>
+        <div>
+            <input type="radio" name="user_type" id="is_guide" value="guide" required>
+            <label for="is_guide">Register as a Guide</label>
+        </div>
+        <button type="submit">Next</button>
+        <p> Already have an account?<a href="{% url 'users:login' %}">Login</a></p>
+    </form>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% block content %}
+    <h2>Register</h2>
+    <form method="POST" action="{% url 'users:register' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <!-- This hidden field will carry the user type selection -->
+        <input type="hidden" name="user_type" value="{{ request.session.user_type }}">
+        <button type="submit">Register</button>
+    </form>
+{% endblock %}

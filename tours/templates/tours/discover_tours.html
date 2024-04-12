@@ -21,19 +21,21 @@
         <p>{{ tour.description }}</p>
 
         {% if user.is_authenticated %}
-            <a href="{% url 'tours:book_tour' tour.id %}">Book</a>
-            <div class="tour-reviews">
-                <h4>Reviews</h4>
-                <a href="{% url 'tours:add_review' tour.id  %}">Add Review</a>
-                {% for review in tour.reviews.all %}
-                    <div class="review">
-                        <strong>{{ review.author.user.username }}</strong> <!-- Adjust based on your user model relationship -->
-                        <p>Rating: {{ review.rating }}</p>
-                        <p>{{ review.content }}</p>
-                    </div>
-                {% empty %}
-                    <p>No reviews yet.</p>
-                {% endfor %}
+            {% if  not request.user.profile.is_guide %}
+                <a href="{% url 'tours:book_tour' tour.id %}">Book</a>
+                <div class="tour-reviews">
+                    <h4>Reviews</h4>
+                    <a href="{% url 'tours:add_review' tour.id  %}">Add Review</a>
+                    {% for review in tour.reviews.all %}
+                        <div class="review">
+                            <strong>{{ review.author.user.username }}</strong> <!-- Adjust based on your user model relationship -->
+                            <p>Rating: {{ review.rating }}</p>
+                            <p>{{ review.content }}</p>
+                        </div>
+                    {% empty %}
+                        <p>No reviews yet.</p>
+                    {% endfor %}
+            {% endif %}
             </div>
             <!-- Include other actions like rate, save, etc. -->
         {% else %}

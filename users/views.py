@@ -8,21 +8,33 @@ from .forms import UserRegisterForm
 from .models import UserProfile
 from .forms import UserProfileForm
 
+
+def choose_user_type(request):
+    if request.method == 'POST':
+        user_type = request.POST.get('user_type')
+        request.session['user_type'] = user_type  # Store the selection in the session
+        return redirect('users:register')  # Redirect to the actual registration form
+
+    return render(request, 'registration/user_type_selection.html')
+
 def register(request):
+    user_type = request.session.get('user_type', 'tourist')  # Default to 'tourist'
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
-            # Check if the UserProfile already exists and get or create accordingly
             profile, created = UserProfile.objects.get_or_create(user=user)
-            profile.is_tourist = form.cleaned_data.get('is_tourist', False)
-            profile.is_guide = form.cleaned_data.get('is_guide', False)
+            if user_type == 'tourist':
+                profile.is_tourist = True
+            else:
+                profile.is_guide = True
             profile.save()
+            del request.session['user_type']  # Clean up the session
             messages.success(request, f'Your account has been created! You are now able to log in')
-            return redirect('users:login')  # Adjust the namespace and URL name as necessary
+            return redirect('users:login')
     else:
-        form = UserRegisterForm()
-    return render(request, 'users/register.html', {'form': form})
+        form = UserRegisterForm(initial={'user_type': user_type})
+    return render(request, 'registration/register.html', {'form': form})
 
 
 def profile_view(request, username):
