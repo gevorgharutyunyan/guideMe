@@ -1,7 +1,22 @@
-# main/views.py
-
+from django.shortcuts import redirect, render
 from django.shortcuts import render
-
+from users.models import UserProfile
 def home_view(request):
-    # You can include any logic here for things you want to send to the template
-    return render(request, 'main/welcome_page.html')
+    """
+    Home view that checks user type and redirects accordingly.
+    """
+    if request.session.pop('is_new_social_user', None):
+        # Redirect new users to role selection
+        return redirect('users:choose_role')
+
+    # Logic for determining where to redirect users based on their profile
+    if request.user.is_authenticated:
+        try:
+            if request.user.profile.is_tourist:
+                return redirect('tours:discover')
+            elif request.user.profile.is_guide:
+                return redirect('tours:guides_dashboard')
+        except UserProfile.DoesNotExist:
+            return redirect('users:choose_role')  # Redirect to choose role if profile does not exist
+
+    return render(request, 'main/home.html')

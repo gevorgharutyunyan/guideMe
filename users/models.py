@@ -3,7 +3,7 @@ from django.db import models
 from django.conf import settings
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    is_tourist = models.BooleanField(default=True)
+    is_tourist = models.BooleanField(default=False)
     is_guide = models.BooleanField(default=False)
     bio = models.TextField(null=True, blank=True)
     experience = models.TextField(null=True, blank=True)  # For guides

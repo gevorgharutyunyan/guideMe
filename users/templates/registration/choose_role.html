@@ -1,0 +1,8 @@
+<form method="post" action="{% url 'users:choose_role' %}">
+    {% csrf_token %}
+    <input type="radio" name="role" value="tourist" id="tourist">
+    <label for="tourist">Tourist</label><br>
+    <input type="radio" name="role" value="guide" id="guide">
+    <label for="guide">Guide</label><br>
+    <button type="submit">Submit</button>
+</form>

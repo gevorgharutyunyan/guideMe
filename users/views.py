@@ -53,7 +53,7 @@ class CustomLoginView(LoginView):
 
 
 class CustomLogoutView(LogoutView):
-    next_page = reverse_lazy('home')
+    next_page = reverse_lazy('main:home')
 
     def dispatch(self, *args, **kwargs):
         # Custom actions before logout, if needed
@@ -72,3 +72,14 @@ def edit_profile(request):
         form = UserProfileForm(instance=request.user.profile)
 
     return render(request, 'users/edit_profile.html', {'form': form})
+
+def choose_role(request):
+    if request.method == 'POST':
+        role = request.POST.get('role')
+        profile, created = UserProfile.objects.get_or_create(user=request.user)
+        profile.is_tourist = (role == 'tourist')
+        profile.is_guide = (role == 'guide')
+        profile.save()
+        return redirect('main:home')  # Redirect to home which will handle further redirection
+
+    return render(request, 'registration/choose_role.html')
