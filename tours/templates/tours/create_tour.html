@@ -2,9 +2,13 @@
 
 {% block content %}
   <h2>Add a New Tour</h2>
-  <form method="post">
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
+    {{ formset.management_form }} <!-- This is important! -->
+    {% for form in formset %}
+        {{ form.as_p }}
+    {% endfor %}
     <button type="submit">Submit</button>
-  </form>
+</form>
 {% endblock %}

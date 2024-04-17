@@ -12,6 +12,11 @@
         <p>Price: ${{ tour.price }}</p>
         <p>Start Date: {{ tour.availability_start }}</p>
         <p>End Date: {{ tour.availability_end }}</p>
+        {% if tour.tour_images %}
+            <img src="{{ tour.tour_images.url }}" alt="Image of {{ tour.title }}" style="width: 50px; height: auto;">
+        {% else %}
+            <p>No image available</p>
+        {% endif %}
 
         {% if user_boolean %}
             <form action="{% url 'tours:delete' tour.id %}" method="post" style="display: inline;">

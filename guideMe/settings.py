@@ -146,8 +146,8 @@ SESSION_COOKIE_AGE = 1209600  # 2 weeks, in seconds
 
 # STATIC_ROOT = BASE_DIR / 'collected_static'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AUTHENTICATION_BACKENDS = (
     # ...

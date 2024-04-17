@@ -3,6 +3,8 @@ from django.forms.widgets import DateInput
 from django import forms
 from .models import Booking, Tour
 from .models import Review
+from django.forms import inlineformset_factory
+from .models import  TourImage
 
 class BookingForm(forms.ModelForm):
     class Meta:
@@ -13,6 +15,7 @@ class BookingForm(forms.ModelForm):
         }
 
 
+
 class TourForm(forms.ModelForm):
     class Meta:
         model = Tour
@@ -21,6 +24,9 @@ class TourForm(forms.ModelForm):
             'availability_start': DateInput(attrs={'type': 'date'}),
             'availability_end': DateInput(attrs={'type': 'date'}),
         }
+
+TourImageFormSet = inlineformset_factory(Tour, TourImage, fields=['image'], extra=3, can_delete=True)
+
 
 class ReviewForm(forms.ModelForm):
     class Meta:

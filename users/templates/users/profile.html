@@ -26,11 +26,17 @@
                     <p>{{ tour.description }}</p>
                     <p>Price: ${{ tour.price }}</p>
                     <p>Duration: {{ tour.duration }} hours</p>
-                    <!-- Add more details here -->
+                    <a href="{% url 'tours:edit' tour.id  %}">Edit</a>
+                        {% for image in tour.images.all %}
+                            <img src="{{ image.image.url }}" alt="Image of {{ tour.title }}" style="width: 50px; height: auto;">
+                        {% empty %}
+                            <p>No images available.</p>
+                        {% endfor %}
                 </div>
             {% empty %}
                 <p>No tours listed yet.</p>
             {% endfor %}
+
         </div>
     {% else %}
         <a href="{% url 'tours:tourist_bookings' %}">My Bookings</a>

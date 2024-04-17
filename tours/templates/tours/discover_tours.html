@@ -18,6 +18,11 @@
     {% for tour in tours %}
     <div class="tour">
         <h3>{{ tour.title }}</h3>
+        {% for image in tour.images.all %}
+            <img src="{{ image.image.url }}" alt="Image of {{ tour.title }}" style="width: 50px; height: auto;">
+        {% empty %}
+            <p>No images available.</p>
+        {% endfor %}
         <p>{{ tour.description }}</p>
 
         {% if user.is_authenticated %}
@@ -25,7 +30,7 @@
                 <a href="{% url 'tours:book_tour' tour.id %}">Book</a>
                 <div class="tour-reviews">
                     <h4>Reviews</h4>
-                    <a href="{% url 'tours:add_review' tour.id  %}">Add Review</a>
+                    <a href="{% url 'tours:add_review' tour.id %}">Add Review</a>
                     {% for review in tour.reviews.all %}
                         <div class="review">
                             <strong>{{ review.author.user.username }}</strong> <!-- Adjust based on your user model relationship -->

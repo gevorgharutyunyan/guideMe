@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Tour
-from .forms import BookingForm, TourForm
+from .models import Tour, TourImage
+from .forms import BookingForm, TourForm, TourImageFormSet
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from users.models import UserProfile
@@ -31,15 +31,19 @@ def book_tour(request, tour_id):
 def create_tour(request):
     if request.method == 'POST':
         form = TourForm(request.POST)
-        if form.is_valid():
+        formset = TourImageFormSet(request.POST, request.FILES, queryset=TourImage.objects.none())
+        if form.is_valid() and formset.is_valid():
             tour = form.save(commit=False)
             user_profile, created = UserProfile.objects.get_or_create(user=request.user)
-            tour.guide = user_profile
+            tour.guide = user_profile  # Adjust according to your user relationship
             tour.save()
+            formset.instance = tour
+            formset.save()
             return redirect('tours:tour_list')
     else:
         form = TourForm()
-    return render(request, 'tours/create_tour.html', {'form': form})
+        formset = TourImageFormSet(queryset=TourImage.objects.none())
+    return render(request, 'tours/create_tour.html', {'form': form, 'formset': formset})
 
 
 def guides_dashboard_view(request):
@@ -65,13 +69,16 @@ def discover_tours_view(request):
 def edit_tour(request, tour_id):
     tour = get_object_or_404(Tour, id=tour_id)
     if request.method == 'POST':
-        form = TourForm(request.POST, instance=tour)
-        if form.is_valid():
+        form = TourForm(request.POST, request.FILES, instance=tour)
+        formset = TourImageFormSet(request.POST, request.FILES, instance=tour)
+        if form.is_valid() and formset.is_valid():
             form.save()
-            return redirect('tours:guides_dashboard')  # Redirect to the tour list or dashboard
+            formset.save()  # Save the formset to handle the images
+            return redirect('tours:tour_list')  # Redirect to the tour list or dashboard
     else:
         form = TourForm(instance=tour)
-    return render(request, 'tours/edit_tour.html', {'form': form})
+        formset = TourImageFormSet(instance=tour)  # Initialize the formset with the current tour instance
+    return render(request, 'tours/edit_tour.html', {'form': form, 'formset': formset})
 
 
 
@@ -82,7 +89,7 @@ def delete_tour(request, tour_id):
     tour = get_object_or_404(Tour, id=tour_id)
     if request.user.profile.is_guide and tour.guide == request.user.profile:
         tour.delete()
-        return redirect('tours:guides_dashboard')
+        return redirect('tours:tour_list')
     else:
         # Handle unauthorized attempt
         return HttpResponseForbidden('You are not authorized to delete this tour.')

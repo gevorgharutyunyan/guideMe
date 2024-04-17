@@ -13,7 +13,13 @@ class Tour(models.Model):
 
     def __str__(self):
         return self.title
-    
+
+class TourImage(models.Model):
+    tour = models.ForeignKey(Tour, related_name='images', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='tour_images/')
+
+    def __str__(self):
+        return f"Images for {self.tour.title}"
 
 class Booking(models.Model):
     tour = models.ForeignKey(Tour, on_delete=models.CASCADE, related_name='bookings')

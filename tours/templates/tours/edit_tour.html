@@ -1,10 +1,20 @@
-{% extends "base.html" %}
-
 {% block content %}
 <h2>Edit Tour</h2>
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
+    <h3>Tour Images</h3>
+    {{ formset.management_form }}
+    {% for image_form in formset %}
+        <div>
+            {{ image_form.image.label_tag }} {{ image_form.image }}
+            {% if image_form.instance.image %}
+                <div>
+                    <img src="{{ image_form.instance.image.url }}" alt="Tour Image" height="100">
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
     <button type="submit">Update</button>
 </form>
 {% endblock %}
