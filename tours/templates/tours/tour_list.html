@@ -5,6 +5,7 @@
 {% block content %}
 <h2>Available Tours</h2>
 <ul>
+    <a href="{% url 'tours:create' %}">Create New Tour</a>
     {% for tour in tours %}
     <li>
         <h3>{{ tour.title }}</h3>
@@ -12,11 +13,11 @@
         <p>Price: ${{ tour.price }}</p>
         <p>Start Date: {{ tour.availability_start }}</p>
         <p>End Date: {{ tour.availability_end }}</p>
-        {% if tour.tour_images %}
-            <img src="{{ tour.tour_images.url }}" alt="Image of {{ tour.title }}" style="width: 50px; height: auto;">
-        {% else %}
-            <p>No image available</p>
-        {% endif %}
+        {% for image in tour.images.all %}
+            <img src="{{ image.image.url }}" alt="Image of {{ tour.title }}" style="width: 50px; height: auto;">
+        {% empty %}
+            <p>No images available.</p>
+        {% endfor %}
 
         {% if user_boolean %}
             <form action="{% url 'tours:delete' tour.id %}" method="post" style="display: inline;">

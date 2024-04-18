@@ -7,7 +7,6 @@
     {{ formset.management_form }}
     {% for image_form in formset %}
         <div>
-            {{ image_form.image.label_tag }} {{ image_form.image }}
             {% if image_form.instance.image %}
                 <div>
                     <img src="{{ image_form.instance.image.url }}" alt="Tour Image" height="100">

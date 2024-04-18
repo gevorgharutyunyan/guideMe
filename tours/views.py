@@ -30,19 +30,27 @@ def book_tour(request, tour_id):
 @login_required
 def create_tour(request):
     if request.method == 'POST':
-        form = TourForm(request.POST)
-        formset = TourImageFormSet(request.POST, request.FILES, queryset=TourImage.objects.none())
-        if form.is_valid() and formset.is_valid():
-            tour = form.save(commit=False)
-            user_profile, created = UserProfile.objects.get_or_create(user=request.user)
-            tour.guide = user_profile  # Adjust according to your user relationship
-            tour.save()
-            formset.instance = tour
-            formset.save()
+        form = TourForm(request.POST, request.FILES)
+        if form.is_valid():
+            tour = form.save(commit=False)  # Save the form temporarily without committing to DB
+            tour.guide = UserProfile.objects.get(user=request.user)  # Set the guide
+            tour.save()  # Now save it to DB
+
+            # Handle image files separately using formsets if needed
+            formset = TourImageFormSet(request.POST, request.FILES, instance=tour)
+            if formset.is_valid():
+                formset.save()
+
+            # Or handle as individual images
+            images = request.FILES.getlist('images')
+            for image in images:
+                TourImage.objects.create(tour=tour, image=image)
+
             return redirect('tours:tour_list')
     else:
         form = TourForm()
-        formset = TourImageFormSet(queryset=TourImage.objects.none())
+        formset = TourImageFormSet()
+
     return render(request, 'tours/create_tour.html', {'form': form, 'formset': formset})
 
 

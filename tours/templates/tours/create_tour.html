@@ -2,13 +2,32 @@
 
 {% block content %}
   <h2>Add a New Tour</h2>
-<form method="post" enctype="multipart/form-data">
+  <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    {{ formset.management_form }} <!-- This is important! -->
-    {% for form in formset %}
-        {{ form.as_p }}
-    {% endfor %}
+    <input type="file" name="images" id="image-input" multiple style="display: none;">
+    <button type="button" onclick="document.getElementById('image-input').click();">
+      Choose Images
+    </button>
+    <ul id="file-list"></ul>  <!-- Placeholder for displaying selected file names -->
     <button type="submit">Submit</button>
-</form>
-{% endblock %}
+  </form>
+{% endblock content %}
+
+{% block extra_scripts %}
+  <script>
+    document.getElementById('image-input').addEventListener('change', function() {
+        const fileList = document.getElementById('file-list');
+        fileList.innerHTML = '';  // Clear existing list
+
+        const files = this.files;
+        if (files.length) {
+            Array.from(files).forEach(file => {
+                const li = document.createElement('li');
+                li.textContent = file.name;  // Create list item for each file
+                fileList.appendChild(li);    // Append to the list
+            });
+        }
+    });
+  </script>
+{% endblock extra_scripts %}

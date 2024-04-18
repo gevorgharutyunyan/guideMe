@@ -17,6 +17,7 @@
 
     <!-- Conditional Sections for Guides and Tourists -->
     {% if user.profile.is_guide %}
+    <a href="{% url 'tours:create' %}">Create New Tour</a>
     <a href="{% url 'tours:bookings_of_guide' %}">Who has booked?</a>
         <div class="guide-section">
             <h2>My Tours</h2>

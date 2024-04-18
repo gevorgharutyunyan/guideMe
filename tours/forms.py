@@ -25,7 +25,7 @@ class TourForm(forms.ModelForm):
             'availability_end': DateInput(attrs={'type': 'date'}),
         }
 
-TourImageFormSet = inlineformset_factory(Tour, TourImage, fields=['image'], extra=3, can_delete=True)
+TourImageFormSet = inlineformset_factory(Tour, TourImage, fields=['image'],extra =0, can_delete=True)
 
 
 class ReviewForm(forms.ModelForm):

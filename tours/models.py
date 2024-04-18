@@ -16,7 +16,7 @@ class Tour(models.Model):
 
 class TourImage(models.Model):
     tour = models.ForeignKey(Tour, related_name='images', on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='tour_images/')
+    image = models.ImageField(upload_to='tour_images/', null=True, blank=True)
 
     def __str__(self):
         return f"Images for {self.tour.title}"
