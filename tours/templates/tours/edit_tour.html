@@ -1,6 +1,8 @@
+{% extends "base.html" %}
+
 {% block content %}
-<h2>Edit Tour</h2>
-<form method="post" enctype="multipart/form-data">
+  <h2>Edit Tour</h2>
+  <form method="post" enctype="multipart/form-data" id="edit-tour-form">
     {% csrf_token %}
     {{ form.as_p }}
     <h3>Tour Images</h3>
@@ -10,10 +12,88 @@
             {% if image_form.instance.image %}
                 <div>
                     <img src="{{ image_form.instance.image.url }}" alt="Tour Image" height="100">
+                    {{ image_form.DELETE }} <!-- Checkbox to mark images for deletion -->
                 </div>
             {% endif %}
+            {{ image_form.as_p }} <!-- Include image form fields -->
         </div>
     {% endfor %}
-    <button type="submit">Update</button>
-</form>
-{% endblock %}
+    <input type="file" name="images" id="image-input" multiple style="display: none;">
+    <button type="button" onclick="document.getElementById('image-input').click();">
+      Add/Change Images
+    </button>
+    <ul id="file-list"></ul> <!-- Placeholder for displaying selected file names -->
+
+    <label for="location-input">Location:</label>
+    <input id="location-input" type="text" name="location" class="form-control" placeholder="Enter or select a location on the map" value="{{ form.instance.location }}">
+    <div id="map" style="height: 200px; width: 100%; margin-top: 10px;"></div>
+    <input type="hidden" name="latitude" id="id_latitude" value="{{ form.instance.latitude }}">
+    <input type="hidden" name="longitude" id="id_longitude" value="{{ form.instance.longitude }}">
+    <button type="button" onclick="handleSubmit()">Update</button>
+  </form>
+{% endblock content %}
+
+{% block extra_scripts %}
+{{ block.super }}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var initialLat = parseFloat('{{ form.instance.latitude|default:"51.505" }}');
+    var initialLng = parseFloat('{{ form.instance.longitude|default:"-0.09" }}');
+    var map = L.map('map').setView([initialLat, initialLng], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    var marker = L.marker([initialLat, initialLng], {draggable: true}).addTo(map);
+
+function updateLatLng(lat, lng) {
+    // Remove existing inputs if they exist
+    var existingLatInput = document.getElementById('id_latitude');
+    var existingLngInput = document.getElementById('id_longitude');
+    if (existingLatInput) existingLatInput.remove();
+    if (existingLngInput) existingLngInput.remove();
+
+    // Create new input for latitude
+    var latInput = document.createElement('input');
+    latInput.setAttribute('type', 'hidden');
+    latInput.setAttribute('name', 'latitude');
+    latInput.setAttribute('id', 'id_latitude');
+    latInput.setAttribute('value', lat);
+
+    // Create new input for longitude
+    var lngInput = document.createElement('input');
+    lngInput.setAttribute('type', 'hidden');
+    lngInput.setAttribute('name', 'longitude');
+    lngInput.setAttribute('id', 'id_longitude');
+    lngInput.setAttribute('value', lng);
+
+    // Append the new inputs to the form
+    var form = document.getElementById('edit-tour-form');
+    form.appendChild(latInput);
+    form.appendChild(lngInput);
+
+    console.log("Latitude and Longitude inputs have been updated.");
+}
+
+
+    marker.on('dragend', function(event) {
+        var position = event.target.getLatLng();
+        updateLatLng(position.lat, position.lng);
+    });
+
+    map.on('click', function(e) {
+        marker.setLatLng(e.latlng);
+        updateLatLng(e.latlng.lat, e.latlng.lng);
+    });
+    window.handleSubmit = function() {
+    console.log("Submitting form with Latitude: " + document.getElementById('id_latitude').value +
+                ", Longitude: " + document.getElementById('id_longitude').value);
+    document.getElementById('edit-tour-form').submit(); // Make sure this ID is correct
+};
+});
+
+
+</script>
+{% endblock extra_scripts %}

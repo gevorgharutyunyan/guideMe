@@ -13,6 +13,9 @@
         <p>Price: ${{ tour.price }}</p>
         <p>Start Date: {{ tour.availability_start }}</p>
         <p>End Date: {{ tour.availability_end }}</p>
+        <p>Location {{ tour.location }} </p>
+        <p>Latitude: {{ tour.latitude }}</p>
+        <p>Longitude: {{ tour.longitude }}</p>
         {% for image in tour.images.all %}
             <img src="{{ image.image.url }}" alt="Image of {{ tour.title }}" style="width: 50px; height: auto;">
         {% empty %}

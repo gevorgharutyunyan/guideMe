@@ -1,54 +1,107 @@
-
 {% extends "base.html" %}
 {% load static %}
+
 {% block content %}
-<!-- Search and Filters -->
 <div class="search-filters">
     <!-- Implement search and filter form -->
 </div>
 
-    <nav class="container-fluid">
-        <a href="{% url 'main:home' %}" class="logo">
-            <img src="{% static 'img/new_logo.webp' %}" alt="GuideMe Logo" style="width: 50px; height: auto;">
-        </a>
-    </nav>
-<!-- All Tours -->
+<nav class="container-fluid">
+    <a href="{% url 'main:home' %}" class="logo">
+        <img src="{% static 'img/new_logo.webp' %}" alt="GuideMe Logo" style="width: 50px; height: auto;">
+    </a>
+</nav>
+
+<!-- Map Modal -->
+<div id="mapModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">×</span> <!-- Changed class to 'close-button' for clarity -->
+        <div id="map" style="height: 400px; width: 100%;"></div>
+    </div>
+</div>
+
 <div class="all-tours">
     <h2>All Tours</h2>
     {% for tour in tours %}
     <div class="tour">
         <h3>{{ tour.title }}</h3>
         {% for image in tour.images.all %}
-            <img src="{{ image.image.url }}" alt="Image of {{ tour.title }}" style="width: 50px; height: auto;">
+        <img src="{{ image.image.url }}" alt="Image of {{ tour.title }}" style="width: 50px; height: auto;">
         {% empty %}
-            <p>No images available.</p>
+        <p>No images available.</p>
         {% endfor %}
         <p>{{ tour.description }}</p>
+        <p>Location {{ tour.location }} </p>
+        <p>Latitude: {{ tour.latitude }}</p>
+        <p>Longitude: {{ tour.longitude }}</p>
+        <p>Start {{ tour.availability_start }}</p>
+        <p>End  {{ tour.availability_end }}</p>
+        <button onClick="showMap({{ tour.latitude|default:'51.505' }}, {{ tour.longitude|default:'-0.09' }}, '{{ tour.location|default:'Unknown location'|escapejs }}')">
+            Show on Map
+        </button>
 
+
+        <!-- User interactions -->
         {% if user.is_authenticated %}
-            {% if  not request.user.profile.is_guide %}
-                <a href="{% url 'tours:book_tour' tour.id %}">Book</a>
-                <div class="tour-reviews">
-                    <h4>Reviews</h4>
-                    <a href="{% url 'tours:add_review' tour.id %}">Add Review</a>
-                    {% for review in tour.reviews.all %}
-                        <div class="review">
-                            <strong>{{ review.author.user.username }}</strong> <!-- Adjust based on your user model relationship -->
-                            <p>Rating: {{ review.rating }}</p>
-                            <p>{{ review.content }}</p>
-                        </div>
-                    {% empty %}
-                        <p>No reviews yet.</p>
-                    {% endfor %}
-            {% endif %}
+            {% if not request.user.profile.is_guide %}
+            <a href="{% url 'tours:book_tour' tour.id %}">Book</a>
+            <div class="tour-reviews">
+                <h4>Reviews</h4>
+                <a href="{% url 'tours:add_review' tour.id %}">Add Review</a>
+                {% for review in tour.reviews.all %}
+                <div class="review">
+                    <strong>{{ review.author.user.username }}</strong>
+                    <p>Rating: {{ review.rating }}</p>
+                    <p>{{ review.content }}</p>
+                </div>
+                {% empty %}
+                <p>No reviews yet.</p>
+                {% endfor %}
             </div>
-            <!-- Include other actions like rate, save, etc. -->
+            {% endif %}
         {% else %}
-            <p><a href="{% url 'users:login' %}">Log in</a> to book or rate tours.</p>
+        <p><a href="{% url 'users:login' %}">Log in</a> to book or rate tours.</p>
         {% endif %}
-        <!-- Display Reviews for Each Tour -->
-
     </div>
     {% endfor %}
 </div>
+{% endblock %}
+{% block extra_scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var modal = document.getElementById('mapModal');
+    var closeBtn = document.getElementsByClassName('close-button')[0];
+    var map = null;  // Initialize map variable
+
+    function initMap(lat, lng, locationName) {
+        if (map !== null) {
+            map.remove();  // This ensures the map is properly destroyed
+        }
+        // Recreate the map div dynamically
+        document.getElementById('map').innerHTML = "<div id='newMap' style='height: 400px; width: 100%;'></div>";
+        map = L.map('newMap').setView([lat, lng], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        L.marker([lat, lng]).addTo(map)
+            .bindPopup(locationName)
+            .openPopup();
+    }
+
+    closeBtn.onclick = function() {
+        modal.style.display = "none";
+    };
+
+    window.onclick = function(event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    };
+
+    window.showMap = function(lat, lng, locationName) {  // Make showMap global
+        modal.style.display = 'block';
+        initMap(lat, lng, locationName);  // Initialize map with new coordinates
+    };
+});
+</script>
 {% endblock %}

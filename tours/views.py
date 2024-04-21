@@ -31,17 +31,27 @@ def book_tour(request, tour_id):
 def create_tour(request):
     if request.method == 'POST':
         form = TourForm(request.POST, request.FILES)
+        formset = TourImageFormSet(request.POST, request.FILES)
+        print(request.POST)
         if form.is_valid():
             tour = form.save(commit=False)  # Save the form temporarily without committing to DB
-            tour.guide = UserProfile.objects.get(user=request.user)  # Set the guide
-            tour.save()  # Now save it to DB
+            tour.guide = request.user.profile  # assuming you have a UserProfile related to your User
+            latitude = request.POST.getlist('latitude')[0] if request.POST.getlist('latitude') else None
+            longitude = request.POST.getlist('longitude')[0] if request.POST.getlist('longitude') else None
 
-            # Handle image files separately using formsets if needed
+
+            # You need to set latitude and longitude on the tour object here
+            if latitude and longitude:
+                tour.latitude = float(latitude)
+                tour.longitude = float(longitude)
+
+            tour.save()
+            print("Received latitude:", tour.latitude)
+            print("Received longitude:", tour.latitude)
             formset = TourImageFormSet(request.POST, request.FILES, instance=tour)
             if formset.is_valid():
                 formset.save()
 
-            # Or handle as individual images
             images = request.FILES.getlist('images')
             for image in images:
                 TourImage.objects.create(tour=tour, image=image)
@@ -74,19 +84,40 @@ def discover_tours_view(request):
     return render(request, 'tours/discover_tours.html', { 'tours': tours}) #'featured_tours': featured_tours,
 
 
+@login_required
 def edit_tour(request, tour_id):
     tour = get_object_or_404(Tour, id=tour_id)
     if request.method == 'POST':
         form = TourForm(request.POST, request.FILES, instance=tour)
         formset = TourImageFormSet(request.POST, request.FILES, instance=tour)
         if form.is_valid() and formset.is_valid():
-            form.save()
-            formset.save()  # Save the formset to handle the images
-            return redirect('tours:tour_list')  # Redirect to the tour list or dashboard
+            updated_tour = form.save(commit=False)
+
+            # Retrieve and convert latitude and longitude values before saving the Tour object
+            try:
+                updated_tour.latitude = float(request.POST.get('latitude', updated_tour.latitude))
+                updated_tour.longitude = float(request.POST.get('longitude', updated_tour.longitude))
+            except ValueError as e:
+                print("Error converting latitude or longitude:", e)
+
+            # Saving the object after setting latitude and longitude
+            updated_tour.save()
+            formset.save()
+
+            # Log the values that were supposed to be saved
+            print(f"Saved: Latitude: {updated_tour.latitude}, Longitude: {updated_tour.longitude}")
+
+            return redirect('tours:tour_list')
+        else:
+            print("Form errors:", form.errors)
     else:
         form = TourForm(instance=tour)
-        formset = TourImageFormSet(instance=tour)  # Initialize the formset with the current tour instance
+        formset = TourImageFormSet(instance=tour)
+
     return render(request, 'tours/edit_tour.html', {'form': form, 'formset': formset})
+
+
+
 
 
 

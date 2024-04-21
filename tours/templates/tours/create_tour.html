@@ -5,29 +5,73 @@
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
+        <!-- Image upload interface -->
     <input type="file" name="images" id="image-input" multiple style="display: none;">
     <button type="button" onclick="document.getElementById('image-input').click();">
       Choose Images
     </button>
     <ul id="file-list"></ul>  <!-- Placeholder for displaying selected file names -->
     <button type="submit">Submit</button>
+    <!-- Human-readable location input -->
+    <label for="location-input">Location:</label>
+    <input id="location-input" type="text" name="location" class="form-control" placeholder="Enter or select a location on the map">
+    <!-- Map interface -->
+    <input id="pac-input" class="controls" type="text" placeholder="Search Box" style="margin-top: 10px; width: 95%;"/>
+    <div id="map" style="height: 500px; width: 100%; margin-top: 10px;"></div>
+    <input type="hidden" name="latitude" id="id_latitude" value="">
+    <input type="hidden" name="longitude" id="id_longitude" value="">
   </form>
 {% endblock content %}
 
 {% block extra_scripts %}
   <script>
-    document.getElementById('image-input').addEventListener('change', function() {
-        const fileList = document.getElementById('file-list');
-        fileList.innerHTML = '';  // Clear existing list
+    var map = L.map('map').setView([51.505, -0.09], 13); // Set initial position and zoom level of the map
 
-        const files = this.files;
-        if (files.length) {
-            Array.from(files).forEach(file => {
-                const li = document.createElement('li');
-                li.textContent = file.name;  // Create list item for each file
-                fileList.appendChild(li);    // Append to the list
-            });
-        }
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    var marker;
+
+    map.on('click', function(e) {
+      var coord = e.latlng;
+      var lat = coord.lat;
+      var lng = coord.lng;
+      console.log("You clicked the map at latitude: " + lat + " and longitude: " + lng);
+      // Create or move the marker
+      if (marker) {
+        marker.setLatLng(coord);
+      } else {
+        marker = L.marker(coord).addTo(map);
+      }
+      // Update hidden form fields and location input
+      document.getElementById('id_latitude').value = lat;
+      document.getElementById('id_longitude').value = lng;
+      console.log("Updated lat:", lat, "Updated lng:", lng);
+      document.getElementById('location-input').value = "Loading location name..."; // Placeholder text
+
+      fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('location-input').value = data.display_name; // Update with actual location name
+        })
+        .catch(() => document.getElementById('location-input').value = "Failed to load location name");
     });
+
+    document.getElementById('image-input').addEventListener('change', function() {
+      const fileList = document.getElementById('file-list');
+      fileList.innerHTML = '';  // Clear existing list
+
+      const files = this.files;
+      if (files.length) {
+        Array.from(files).forEach(file => {
+          const li = document.createElement('li');
+          li.textContent = file.name;  // Create list item for each file
+          fileList.appendChild(li);    // Append to the list
+        });
+      }
+    });
+
   </script>
 {% endblock extra_scripts %}

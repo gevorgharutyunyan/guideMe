@@ -22,6 +22,9 @@
                 <p>No images available.</p>
             {% endfor %}
         <p>{{ tour.description }}</p>
+        <p>Location {{ tour.location }} </p>
+        <p>Latitude: {{ tour.latitude }}</p>
+        <p>Longitude: {{ tour.longitude }}</p>
         <a href="{% url 'tours:edit' tour.id %}">Edit</a>
         <form action="{% url 'tours:delete' tour.id %}" method="post" onsubmit="return confirm('Are you sure you want to delete this tour?');">
             {% csrf_token %}

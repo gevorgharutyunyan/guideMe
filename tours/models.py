@@ -4,12 +4,16 @@ from users.models import UserProfile
 from django.conf import settings
 class Tour(models.Model):
     guide = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='tours')
-    title = models.CharField(max_length=200)
-    description = models.TextField()
-    price = models.DecimalField(max_digits=6, decimal_places=2)
-    duration = models.PositiveIntegerField(help_text="Duration in hours")
-    availability_start = models.DateField(null=True)
-    availability_end = models.DateField(null=True)
+    title = models.CharField(max_length=200, blank=True)
+    description = models.TextField(blank=True)
+    price = models.DecimalField(max_digits=6, decimal_places=2, blank=True)
+    duration = models.PositiveIntegerField(blank=True,help_text="Duration in hours")
+    availability_start = models.DateField(null=True, blank=True,)
+    availability_end = models.DateField(null=True, blank=True,)
+    latitude = models.FloatField(null=True, blank=True, help_text="Latitude for the tour location")
+    longitude = models.FloatField(null=True, blank=True, help_text="Longitude for the tour location")
+    location = models.CharField(max_length=255, blank=True, null=True, help_text="Human-readable location name")
+
 
     def __str__(self):
         return self.title
