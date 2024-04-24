@@ -1,16 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% block extra_styles %}
+<link rel="stylesheet" href="{% static 'css/discover_tours.css' %}">
+{% endblock extra_styles %}
 {% block content %}
 <div class="search-filters">
     <!-- Implement search and filter form -->
 </div>
-
-<nav class="container-fluid">
-    <a href="{% url 'main:home' %}" class="logo">
-        <img src="{% static 'img/new_logo.webp' %}" alt="GuideMe Logo" style="width: 50px; height: auto;">
-    </a>
-</nav>
 
 <!-- Map Modal -->
 <div id="mapModal" class="modal">
@@ -25,34 +21,48 @@
     {% for tour in tours %}
     <div class="tour">
         <h3>{{ tour.title }}</h3>
-        {% for image in tour.images.all %}
-        <img src="{{ image.image.url }}" alt="Image of {{ tour.title }}" style="width: 50px; height: auto;">
-        {% empty %}
-        <p>No images available.</p>
-        {% endfor %}
-        <p>{{ tour.description }}</p>
-        <p>Location {{ tour.location }} </p>
-        <p>Latitude: {{ tour.latitude }}</p>
-        <p>Longitude: {{ tour.longitude }}</p>
-        <p>Start {{ tour.availability_start }}</p>
-        <p>End  {{ tour.availability_end }}</p>
-        <button onClick="showMap({{ tour.latitude|default:'51.505' }}, {{ tour.longitude|default:'-0.09' }}, '{{ tour.location|default:'Unknown location'|escapejs }}')">
+        {% if tour.images.all %}
+            <!-- Carousel -->
+            <div id="carousel{{ forloop.counter }}" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    {% for image in tour.images.all %}
+                    <div class="carousel-item{% if forloop.first %} active{% endif %}">
+                        <img src="{{ image.image.url }}" class="d-block w-100" alt="Image of {{ tour.title }}">
+                    </div>
+                    {% endfor %}
+                </div>
+                <a class="carousel-control-prev" href="#carousel{{ forloop.counter }}" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carousel{{ forloop.counter }}" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        {% else %}
+            <p>No images available.</p>
+        {% endif %}
+        <p class="tour-description">{{ tour.description }}</p>
+        <p class="tour-location">Location {{ tour.location }} </p>
+        <p class="tour-start">Start {{ tour.availability_start }}</p>
+        <p class="tour-end">End  {{ tour.availability_end }}</p>
+        <button class="show-map-button" onClick="showMap({{ tour.latitude|default:'51.505' }}, {{ tour.longitude|default:'-0.09' }}, '{{ tour.location|default:'Unknown location'|escapejs }}')">
             Show on Map
         </button>
-
 
         <!-- User interactions -->
         {% if user.is_authenticated %}
             {% if not request.user.profile.is_guide %}
-            <a href="{% url 'tours:book_tour' tour.id %}">Book</a>
+            <button class="book-button"> <a href="{% url 'tours:book_tour' tour.id %}" style="color: white">Book</a></button>
             <div class="tour-reviews">
                 <h4>Reviews</h4>
-                <a href="{% url 'tours:add_review' tour.id %}">Add Review</a>
+                <button class="review-button"> <a href="{% url 'tours:add_review' tour.id %}" style="color: white">Add Review</a></button>
                 {% for review in tour.reviews.all %}
                 <div class="review">
                     <strong>{{ review.author.user.username }}</strong>
-                    <p>Rating: {{ review.rating }}</p>
-                    <p>{{ review.content }}</p>
+                    <p class="review-rating">Rating: {{ review.rating }}</p>
+                    <p class="review-content">{{ review.content }}</p>
                 </div>
                 {% empty %}
                 <p>No reviews yet.</p>

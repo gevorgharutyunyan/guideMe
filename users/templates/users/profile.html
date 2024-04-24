@@ -1,12 +1,18 @@
 {% extends "base.html" %}
 {% load static %}
+{% block extra_styles %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock extra_styles %}
 {% block content %}
 <div class="profile-container">
 
     <a href="{% url 'users:edit_profile' %}">Edit Profile</a>
-    <a href="{% url 'main:home' %}" class="logo">
-        <img src="{% static 'img/new_logo.webp' %}" alt="GuideMe Logo" style="width: 50px; height: auto;">
-    </a>
+    {% if user.profile.image %}
+        <img src="{{ user.profile.image.url }}" alt="{{ user.username }}'s Profile Image" class="rounded-circle">
+    {% else %}
+        <img src="{% static 'img/user.png' %}" alt="Default Profile Image" class="rounded-circle">
+    {% endif %}
+
 
     <!-- Profile Details -->
     <div class="profile-details">
@@ -32,10 +38,6 @@
                     <p>Price: ${{ tour.price }}</p>
                     <p>Duration: {{ tour.duration }} hours</p>
                     <p>Location {{ tour.location }} </p>
-                    <p>Latitude: {{ tour.latitude }}</p>
-                    <p>Longitude: {{ tour.longitude }}</p>
-                    <p>Debug Latitude: {{ tour.latitude }}</p>
-                    <p>Debug Longitude: {{ tour.longitude }}</p>
                     <a href="{% url 'tours:edit' tour.id  %}">Edit</a>
                         {% for image in tour.images.all %}
                             <img src="{{ image.image.url }}" alt="Image of {{ tour.title }}" style="width: 50px; height: auto;">

@@ -1,26 +1,31 @@
 {% extends "base.html" %}
+{% load static %}
+{% block extra_styles %}
+<link rel="stylesheet" href="{% static 'css/create_tour.css' %}">
+{% endblock %}
 
 {% block content %}
+<div class="container">
   <h2>Add a New Tour</h2>
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-        <!-- Image upload interface -->
-    <input type="file" name="images" id="image-input" multiple style="display: none;">
-    <button type="button" onclick="document.getElementById('image-input').click();">
-      Choose Images
-    </button>
-    <ul id="file-list"></ul>  <!-- Placeholder for displaying selected file names -->
-    <button type="submit">Submit</button>
+    <!-- Image upload interface -->
+<label for="image-input" class="button">Choose Images</label>
+<input type="file" name="images" id="image-input" multiple style="display: none;">
+<ul id="file-list"></ul>  <!-- Placeholder for displaying selected file names -->
+
+    <button type="submit" class="button">Submit</button>
     <!-- Human-readable location input -->
     <label for="location-input">Location:</label>
     <input id="location-input" type="text" name="location" class="form-control" placeholder="Enter or select a location on the map">
     <!-- Map interface -->
     <input id="pac-input" class="controls" type="text" placeholder="Search Box" style="margin-top: 10px; width: 95%;"/>
     <div id="map" style="height: 500px; width: 100%; margin-top: 10px;"></div>
-    <input type="hidden" name="latitude" id="id_latitude" value="">
-    <input type="hidden" name="longitude" id="id_longitude" value="">
+    <input type="hidden" name="latitude" id="id_latitude">
+    <input type="hidden" name="longitude" id="id_longitude">
   </form>
+</div>
 {% endblock content %}
 
 {% block extra_scripts %}
@@ -60,17 +65,16 @@
     });
 
     document.getElementById('image-input').addEventListener('change', function() {
-      const fileList = document.getElementById('file-list');
-      fileList.innerHTML = '';  // Clear existing list
-
-      const files = this.files;
-      if (files.length) {
-        Array.from(files).forEach(file => {
-          const li = document.createElement('li');
-          li.textContent = file.name;  // Create list item for each file
-          fileList.appendChild(li);    // Append to the list
-        });
-      }
+        const fileList = document.getElementById('file-list');
+        fileList.innerHTML = '';  // Clear existing list
+        const files = this.files;
+        if (files.length) {
+            Array.from(files).forEach(file => {
+                const li = document.createElement('li');
+                li.textContent = file.name;  // Create list item for each file
+                fileList.appendChild(li);    // Append to the list
+            });
+        }
     });
 
   </script>

@@ -1,0 +1,19 @@
+/* Extend forms.css with general booking display styles */
+.booking {
+    margin: 20px auto;
+    padding: 15px;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    width: 80%;  /* Adjust width as necessary */
+}
+
+.booking h3 {
+    color: #007bff;
+    margin-bottom: 5px;
+}
+
+.booking p {
+    color: #666;
+    margin-left: 20px;
+}

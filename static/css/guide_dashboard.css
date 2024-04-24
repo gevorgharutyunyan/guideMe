@@ -1,0 +1,104 @@
+.guide-dashboard .tours .tour {
+    border: 1px solid #ddd; /* Adds a subtle border around each tour */
+    padding: 15px;
+    margin-bottom: 20px; /* Adds space between tours */
+    border-radius: 8px; /* Slightly rounded corners for a modern look */
+    background-color: #f9f9f9; /* A light background color */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* A subtle shadow for depth */
+}
+
+.guide-dashboard .tour-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px; /* Space between buttons */
+    justify-content: flex-end; /* Aligns the action buttons to the right */
+}
+
+.guide-dashboard .btn {
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 4px;
+    text-align: center;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+.guide-dashboard .btn-success {
+    background-color: #28a745; /* Green color for edit */
+}
+
+.guide-dashboard .btn-success:hover {
+    background-color: #218838;
+}
+
+.guide-dashboard .btn-danger {
+    background-color: #dc3545; /* Red color for delete */
+}
+
+.guide-dashboard .btn-danger:hover {
+    background-color: #c82333;
+}
+
+.guide-dashboard .tour-images img {
+    width: 100%;
+    max-width: 200px; /* Adjust as needed */
+    height: auto;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+.guide-dashboard .tour p {
+    margin-bottom: 10px; /* Adds space between paragraphs */
+    padding: 8px; /* Adds padding around text for better readability */
+    background-color: #ffffff; /* Light background for the paragraph */
+    border-left: 4px solid #007bff; /* Adds a distinctive line to the left of the paragraph */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Subtle shadow for depth */
+    border-radius: 4px; /* Slightly rounded corners for modern look */
+    color: #333; /* Darker text color for contrast */
+    font-size: 16px; /* Slightly larger font size for readability */
+}
+
+.guide-dashboard .tour h3 {
+    margin-top: 0; /* Adjusts spacing at the top of the tour title */
+    margin-bottom: 16px; /* More space below the title */
+    color: #007bff; /* Theme color for the title */
+    font-size: 22px; /* Larger font size for titles */
+}
+
+.guide-dashboard .tour h4 {
+    margin-top: 20px; /* Space above headers for sections like Bookings/Reviews */
+    margin-bottom: 10px; /* Space below headers */
+    color: #28a745; /* Green color for subsection titles */
+    font-size: 18px; /* Font size for subheaders */
+}
+
+.guide-dashboard .quick-links a {
+    display: inline-block; /* Allows padding and margin */
+    padding: 10px 20px; /* Size of the button */
+    background-color: #28a745; /* Green background */
+    color: white; /* White text */
+    border-radius: 5px; /* Rounded corners */
+    text-decoration: none; /* Removes underline */
+    font-weight: bold; /* Makes text bold */
+    margin-top: 20px; /* Space above the button */
+    transition: background-color 0.3s ease; /* Smooth background color transition on hover */
+}
+
+.guide-dashboard .quick-links a:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+
+/* Adjustments for small screens */
+@media (max-width: 768px) {
+    .guide-dashboard .tour-actions {
+        flex-direction: column;
+        align-items: stretch; /* Makes the buttons full width */
+    }
+
+    .guide-dashboard .btn {
+        margin-bottom: 5px; /* Adds space between stacked buttons */
+    }
+}
+
+

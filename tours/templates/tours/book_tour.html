@@ -1,13 +1,20 @@
-<!-- tours/templates/tours/book_tour.html -->
-
 {% extends "base.html" %}
+{% load static %}
+{% block extra_styles  %}
+<link rel="stylesheet" href="{% static 'css/forms.css' %}">
+{% endblock %}
 
 {% block content %}
-<h2>Book Tour: {{ tour.title }}</h2>
+<div class="container">
+    <h2>Book Tour: {{ tour.title }}</h2>
 
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Book Tour</button>
-</form>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_booking_date">Booking Date</label>
+            {{ form.booking_date }}
+        </div>
+        <button type="submit">Book Tour</button>
+    </form>
+</div>
 {% endblock %}

@@ -10,10 +10,10 @@ class UserProfile(models.Model):
     rating = models.FloatField(default=0.0)  # For guides
     image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
     def profile_image_url(self):
-        if self.image and hasattr(self.image, 'url'):
+        if self.image:
             return self.image.url
-        else:
-            return settings.STATIC_URL + 'img/user.png'
+        return settings.STATIC_URL + 'img/user.png'  # Provide a default image path
+
 
 
     def __str__(self):

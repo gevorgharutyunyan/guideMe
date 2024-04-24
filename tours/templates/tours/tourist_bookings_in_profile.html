@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extra_styles  %}
+<link rel="stylesheet" href="{% static 'css/bookings_in_tourist_profile.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Your Bookings</h2>
+    {% for booking in booked_tours %}
+    <div class="booking">
+        <h3>{{ booking.tour.title }}</h3>
+        <p>Booked for: {{ booking.booking_date|date:"Y-m-d" }}</p>  <!-- Formatting date -->
+    </div>
+    {% empty %}
+    <p>No bookings made yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}

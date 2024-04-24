@@ -1,0 +1,141 @@
+/* Style the container for better spacing */
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 1em;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Headings */
+h2 {
+    color: #333;
+    margin-bottom: 0.5em;
+}
+
+h3 {
+    color: #555;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+/* Form styling */
+form {
+    margin-top: 1em;
+}
+
+/* Align the form inputs neatly */
+.form-control {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    margin-bottom: 1em;
+}
+
+/* Style for images and image operations */
+.input-file-container {
+    margin-bottom: 1em;
+}
+
+.input-file-container img {
+    display: block;
+    max-width: 200px;
+    margin-bottom: 0.5em;
+}
+
+.input-file-container label {
+    margin: 0.5em 0;
+    cursor: pointer;
+}
+
+/* Styling file input and list */
+#file-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+#file-list li {
+    background: #e9ecef;
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.input-file {
+    width: 100%;
+    margin: 10px 0;
+}
+
+/* Style the file input trigger button */
+.input-file-trigger {
+    display: block;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.input-file-trigger:hover {
+    background-color: #0056b3;
+}
+
+/* Delete checkbox style */
+[type='checkbox'] {
+    margin-right: 5px;
+}
+
+/* Style for buttons */
+.button {
+    display: inline-block;
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #218838;
+}
+
+/* Map container */
+#map {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Submit button more prominent */
+#edit-tour-form .button[type="submit"] {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    .input-file-trigger,
+    .button {
+        width: 100%;
+    }
+}
+

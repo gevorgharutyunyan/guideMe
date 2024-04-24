@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extra_styles  %}
+<link rel="stylesheet" href="{% static 'css/forms.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>My Tours</h2>
+    {% for tour in my_tours %}
+        <h3>{{ tour.title }}</h3>
+        <p>{{ tour.bookings.count }} bookings</p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Booked by</th>
+                    <th>Booking Date</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for booking in tour.bookings.all %}
+                <tr>
+                    <td>{{ booking.user.user.username }}</td>
+                    <td>{{ booking.booking_date|date:"Y-m-d" }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% empty %}
+        <p>You have not listed any tours.</p>
+    {% endfor %}
+</div>
+{% endblock %}

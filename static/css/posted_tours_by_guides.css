@@ -1,0 +1,81 @@
+/* Style for the Available Tours List */
+.available-tours h2 {
+    color: #007bff; /* Theme color for headings */
+    margin-bottom: 20px; /* Space below the heading */
+}
+
+.available-tours ul {
+    list-style: none; /* Remove default list styling */
+    padding: 0;
+}
+
+.available-tours li {
+    background: #f9f9f9; /* Light grey background */
+    border: 1px solid #ddd; /* Subtle border */
+    padding: 20px; /* Padding inside each list item */
+    margin-bottom: 10px; /* Space between tours */
+    border-radius: 8px; /* Rounded corners for the list items */
+}
+
+.available-tours h3 {
+    color: #333; /* Dark color for tour title */
+    margin-top: 0; /* No margin above the title */
+}
+
+.available-tours p {
+    color: #666; /* Grey color for text */
+    margin: 5px 0; /* Small margin for paragraph spacing */
+}
+
+.available-tours img {
+    width: 100%; /* Full width images */
+    max-width: 300px; /* Limit maximum width */
+    height: auto; /* Maintain aspect ratio */
+    margin-top: 10px; /* Space above images */
+}
+
+.available-tours button {
+    background-color: #dc3545; /* Red color for buttons */
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.available-tours button:hover {
+    background-color: #c82333; /* Darker shade on hover */
+}
+
+.available-tours a {
+    display: inline-block;
+    background-color: #28a745; /* Green background for links */
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    margin-bottom: 20px; /* Space below the link */
+}
+
+.available-tours form {
+    display: inline; /* Inline display for forms */
+}
+
+.carousel-control-prev, .carousel-control-next {
+    width: 1%; /* Smaller width for buttons */
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+    background-size: 20%, 20%; /* Adjust size to fit within buttons */
+}
+
+.carousel-inner .carousel-item img {
+    max-height: 200px; /* Adjust based on your preference */
+    object-fit: contain; /* Keeps the aspect ratio and makes sure the image fits into the carousel */
+    width: 50%; /* Ensures the image takes the full width of the carousel */
+}
+
+.carousel-item {
+    text-align: center; /* Center the images within the carousel */
+}

@@ -1,66 +1,78 @@
 {% extends "base.html" %}
-
+{% load static %}
+{% block extra_styles %}
+<link rel="stylesheet" href="{% static 'css/guide_dashboard.css' %}">
+{% endblock extra_styles %}
 {% block content %}
-<h1> Welcome {{ request.user.username }}s Dashboard </h1>
+<div class="guide-dashboard">
+        <h1>Welcome {{ request.user.username }}'s Dashboard</h1>
 
-<!-- Notifications -->
-<div class="notifications">
-    <h2>Notifications</h2>
-    <p>You have {{ notifications.count }} new notifications</p>
-</div>
+        <!-- Notifications -->
+        <div class="notifications">
+            <h2>Notifications</h2>
+            <p>You have {{ notifications.count }} new notifications</p>
+        </div>
+    <!-- Notifications -->
+    <div class="notifications">
+        <h2>Notifications</h2>
+        <p>You have {{ notifications.count }} new notifications</p>
+    </div>
 
-<!-- List of Tours -->
-<div class="tours">
+    <!-- List of Tours -->
+    <div class="tours">
     <h2>My Tours</h2>
-    <a href="{% url 'tours:create' %}">Create New Tour</a>
-    {% for tour in tours %}
-    <div class="tour">
-        <h3>{{ tour.title }}</h3>
-            {% for image in tour.images.all %}
-                <img src="{{ image.image.url }}" alt="Image of {{ tour.title }}" style="width: 50px; height: auto;">
-            {% empty %}
-                <p>No images available.</p>
-            {% endfor %}
-        <p>{{ tour.description }}</p>
-        <p>Location {{ tour.location }} </p>
-        <p>Latitude: {{ tour.latitude }}</p>
-        <p>Longitude: {{ tour.longitude }}</p>
-        <a href="{% url 'tours:edit' tour.id %}">Edit</a>
-        <form action="{% url 'tours:delete' tour.id %}" method="post" onsubmit="return confirm('Are you sure you want to delete this tour?');">
-            {% csrf_token %}
-            <button type="submit">Delete Tour</button>
-        </form>
+            <a href="{% url 'tours:create' %}" class="btn btn-primary">Create New Tour</a>
+            {% for tour in tours %}
+            <div class="tour">
+                <h3>{{ tour.title }}</h3>
+                <div class="tour-images">
+                    {% for image in tour.images.all %}
+                    <img src="{{ image.image.url }}" alt="Image of {{ tour.title }}" class="img-fluid">
+                    {% empty %}
+                    <p>No images available.</p>
+                    {% endfor %}
+                </div>
+                <p>{{ tour.description }}</p>
+                <p>Location: {{ tour.location }}</p>
+                <div class="tour-actions">
+                    <a href="{% url 'tours:edit' tour.id %}" class="btn btn-success">Edit</a>
+                    <form action="{% url 'tours:delete' tour.id %}" method="post" onsubmit="return confirm('Are you sure you want to delete this tour?');" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Delete Tour</button>
+                    </form>
+                </div>
 
-        <!-- Show bookings for this tour -->
-        <div class="bookings">
-            <h4>Bookings</h4>
-            {% for booking in tour.bookings.all %}
-                <div class="booking">
-                    <p>Booked by: {{ booking.user.user.username }}</p>
-                    <p>Booking Date: {{ booking.booking_date }}</p>
+            <!-- Show bookings for this tour -->
+            <div class="bookings">
+                <h4>Bookings</h4>
+                {% for booking in tour.bookings.all %}
+                    <div class="booking">
+                        <p>Booked by: {{ booking.user.user.username }}</p>
+                        <p>Booking Date: {{ booking.booking_date }}</p>
+                    </div>
+                {% empty %}
+                    <p>No bookings yet for this tour.</p>
+                {% endfor %}
+            </div>
+
+            <!-- Reviews for this tour -->
+            <h4>Reviews</h4>
+            {% for review in tour.reviews.all %}
+                <div class="review">
+                    <strong>Rating: {{ review.rating }}</strong>
+                    <p>{{ review.content }}</p>
+                    <p>By: {{ review.author.user.username }}</p> <!-- Adjust based on your User model -->
                 </div>
             {% empty %}
-                <p>No bookings yet for this tour.</p>
+                <p>No reviews yet.</p>
             {% endfor %}
         </div>
-
-        <!-- Reviews for this tour -->
-        <h4>Reviews</h4>
-        {% for review in tour.reviews.all %}
-            <div class="review">
-                <strong>Rating: {{ review.rating }}</strong>
-                <p>{{ review.content }}</p>
-                <p>By: {{ review.author.user.username }}</p> <!-- Adjust based on your User model -->
-            </div>
-        {% empty %}
-            <p>No reviews yet.</p>
         {% endfor %}
     </div>
-    {% endfor %}
+    <div class="quick-links">
+        <a href="{% url 'users:edit_profile' %}">Manage Profile</a>
+    </div>
 </div>
-
 <!-- Quick Links -->
-<div class="quick-links">
-    <a href="{% url 'users:edit_profile' %}">Manage Profile</a>
-</div>
+
 {% endblock %}

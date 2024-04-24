@@ -28,7 +28,7 @@ class TourForm(forms.ModelForm):
             'location': forms.TextInput(attrs={'placeholder': 'Enter a location'}),
         }
 
-TourImageFormSet = inlineformset_factory(Tour, TourImage, fields=['image'],extra =0, can_delete=True)
+TourImageFormSet = inlineformset_factory(Tour, TourImage, fields=['image'],extra =1, can_delete=True)
 
 
 class ReviewForm(forms.ModelForm):

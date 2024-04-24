@@ -1,6 +1,12 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block extra_styles %}
+<link rel="stylesheet" href="{% static 'css/edit_tour.css' %}">
+{% endblock extra_styles %}
 
 {% block content %}
+<div class="container">
   <h2>Edit Tour</h2>
   <form method="post" enctype="multipart/form-data" id="edit-tour-form">
     {% csrf_token %}
@@ -8,30 +14,30 @@
     <h3>Tour Images</h3>
     {{ formset.management_form }}
     {% for image_form in formset %}
-        <div>
+        <div class="input-file-container">
             {% if image_form.instance.image %}
-                <div>
-                    <img src="{{ image_form.instance.image.url }}" alt="Tour Image" height="100">
-                    {{ image_form.DELETE }} <!-- Checkbox to mark images for deletion -->
-                </div>
+            <div>
+                <img src="{{ image_form.instance.image.url }}" alt="Tour Image" height="100">
+                <label>{{ image_form.DELETE }} Delete this image</label>
+            </div>
             {% endif %}
-            {{ image_form.as_p }} <!-- Include image form fields -->
+            {{ image_form }}
         </div>
     {% endfor %}
-    <input type="file" name="images" id="image-input" multiple style="display: none;">
-    <button type="button" onclick="document.getElementById('image-input').click();">
-      Add/Change Images
-    </button>
-    <ul id="file-list"></ul> <!-- Placeholder for displaying selected file names -->
+
+    <ul id="file-list" class="file-return"></ul> <!-- Placeholder for displaying selected file names -->
 
     <label for="location-input">Location:</label>
     <input id="location-input" type="text" name="location" class="form-control" placeholder="Enter or select a location on the map" value="{{ form.instance.location }}">
     <div id="map" style="height: 200px; width: 100%; margin-top: 10px;"></div>
     <input type="hidden" name="latitude" id="id_latitude" value="{{ form.instance.latitude }}">
     <input type="hidden" name="longitude" id="id_longitude" value="{{ form.instance.longitude }}">
-    <button type="button" onclick="handleSubmit()">Update</button>
+    <button type="button" class="button" onclick="handleSubmit()">Update</button>
   </form>
+
+</div>
 {% endblock content %}
+
 
 {% block extra_scripts %}
 {{ block.super }}
@@ -93,7 +99,18 @@ function updateLatLng(lat, lng) {
     document.getElementById('edit-tour-form').submit(); // Make sure this ID is correct
 };
 });
-
+document.getElementById('image-input').addEventListener('change', function() {
+    const fileList = document.getElementById('file-list');
+    fileList.innerHTML = '';  // Clear existing list
+    const files = this.files;
+    if (files.length) {
+        Array.from(files).forEach(file => {
+            const li = document.createElement('li');
+            li.textContent = file.name;  // Create list item for each file
+            fileList.appendChild(li);    // Append to the list
+        });
+    }
+});
 
 </script>
 {% endblock extra_scripts %}

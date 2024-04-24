@@ -1,0 +1,83 @@
+.profile-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+}
+
+.profile-container a {
+    display: inline-block;
+    margin-right: 10px;
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.profile-container a.logo {
+    background: none;
+    padding: 0;
+}
+
+.profile-details {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.guide-section .tour, .tourist-section .booking {
+    background: #ffffff;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.tour img, .booking img {
+    max-width: 100px;
+    height: auto;
+    margin-right: 10px;
+}
+
+h2 {
+    color: #333;
+}
+
+h3 {
+    margin-top: 0;
+}
+
+p {
+    color: #555;
+    line-height: 1.6;
+}
+
+/* Adjustments for edit and create buttons */
+.profile-container .guide-section a {
+    background-color: #28a745;
+    margin-bottom: 10px;
+}
+
+.profile-container .tourist-section a {
+    background-color: #17a2b8;
+    margin-bottom: 10px;
+}
+
+/* Specific for no content messages */
+.profile-container p {
+    margin: 15px 0;
+}
+
+/* Ensure the buttons and links don't wrap on smaller screens */
+.profile-container a, .profile-container button {
+    white-space: nowrap;
+}
+
+.rounded-circle{
+    width: 50px; /* Adjust the size as needed */
+    height: 50px; /* Adjust the size as needed */
+    border-radius: 50%; /* Circular shape */
+    object-fit: cover; /* Ensures the image covers the area without being stretched */
+    border: 2px solid #007bff; /* Optional: adds a border with the theme color */
+}

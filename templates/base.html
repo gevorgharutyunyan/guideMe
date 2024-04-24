@@ -6,74 +6,91 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
     <title>{% block title %}GuideMe{% endblock %}</title>
-    <!-- Bootstrap CSS -->
+    <!-- Bootstrap CSS for responsiveness and modal functionality -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-        {% block head %}
-    <!-- Existing or other head content -->
+    <!-- Leaflet CSS for map functionality -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    {% endblock head %}
-    {% block extra_styles %}{% endblock %}
+    {% block extra_styles %} {% endblock %}
 </head>
 <body>
-    <nav>
-        <!-- Navbar content -->
-        {% if user.is_authenticated %}
-            <div>Welcome, {{ user.username }}!</div>
-            <a href="{% url 'users:profile' user.username %}">Profile</a>
-            <form action="{% url 'users:logout' %}" method="post">
-                {% csrf_token %}
-                <button type="submit">Logout</button>
-            </form>
-        {% else %}
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">Login</button>
-            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#registerModal">Register</button>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{% url 'main:home' %}">
+            <img src="{% static 'img/new_logo.webp' %}" alt="GuideMe Logo" height="50">
+        </a>
+        <!-- Add 'All Tours' link next to the logo -->
+        {% if user.is_authenticated and user.profile.is_guide %}
+            <a class="nav-link" href="{% url 'tours:tours_list' %}" style="margin-left: 20px;">All Tours</a>
         {% endif %}
-    </nav>
 
-    {% block content %}
-    {% endblock %}
-
-
-
-    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="loginModalLabel">Login to Your Account</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
         </button>
-      </div>
-      <div class="modal-body">
-        <form method="POST" action="{% url 'users:login' %}">
-          {% csrf_token %}
-          <div class="form-group">
-            <label for="username">Username or Email:</label>
-            <input type="text" class="form-control" id="username" name="username" placeholder="Enter username or email" required>
-          </div>
-          <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
-          </div>
-          <button type="submit" class="btn btn-primary">Log In</button>
-        </form>
-        <div class="text-center mt-2">
-          <p>or</p>
-          <a href="{% url 'google_login' %}" class="btn btn-danger">Log In with Gmail</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'users:profile' user.username %}">Welcome, {{ user.username }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <form action="{% url 'users:logout' %}" method="post" class="form-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger">Logout</button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">Login</button>
+                    </li>
+                    <li class="nav-item">
+                        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#registerModal">Register</button>
+                    </li>
+                {% endif %}
+            </ul>
         </div>
-        <!--<div>
-        <p>Or use a third-party service to sign in:</p>
-            <a href="{% url 'google_login' %}">Continue with Google</a>
-        </div>-->
-      </div>
-    </div>
-  </div>
-</div>
+    </nav>
+</header>
 
+
+    <main class="container mt-4">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Login to Your Account</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{% url 'users:login' %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="username">Username or Email:</label>
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Enter username or email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Log In</button>
+                        <div class="text-center mt-2">
+                            <p>or</p>
+                            <a href="{% url 'google_login' %}" class="btn btn-danger">Log In with Gmail</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Register Modal -->
-    <div class="modal" id="registerModal" tabindex="-1" role="dialog">
+    <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 {% include 'registration/user_type_selection.html' %}
@@ -81,14 +98,11 @@
         </div>
     </div>
 
-    <!-- Bootstrap JS and dependencies -->
+    <!-- Bootstrap and Leaflet JS Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script> <!-- Corrected Popper.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-
-    {% block extra_scripts %}
-
-    {% endblock extra_scripts %}
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    {% block extra_scripts %}{% endblock %}
 </body>
 </html>

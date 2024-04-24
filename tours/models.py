@@ -12,7 +12,7 @@ class Tour(models.Model):
     availability_end = models.DateField(null=True, blank=True,)
     latitude = models.FloatField(null=True, blank=True, help_text="Latitude for the tour location")
     longitude = models.FloatField(null=True, blank=True, help_text="Longitude for the tour location")
-    location = models.CharField(max_length=255, blank=True, null=True, help_text="Human-readable location name")
+    location = models.CharField(max_length=255, blank=False, null=True, help_text="Human-readable location name")
 
 
     def __str__(self):
