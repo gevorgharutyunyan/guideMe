@@ -54,11 +54,15 @@ p {
 }
 
 /* Adjustments for edit and create buttons */
-.profile-container .guide-section a {
-    background-color: #28a745;
+.profile-container {
+    background-color: aliceblue;
     margin-bottom: 10px;
 }
 
+.guide-section a {
+    background-color: white;
+    margin-bottom: 10px;
+}
 .profile-container .tourist-section a {
     background-color: #17a2b8;
     margin-bottom: 10px;
@@ -80,4 +84,89 @@ p {
     border-radius: 50%; /* Circular shape */
     object-fit: cover; /* Ensures the image covers the area without being stretched */
     border: 2px solid #007bff; /* Optional: adds a border with the theme color */
+}
+
+.profile-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* ... other styles ... */
+
+.guide-section .tour {
+    background: #ffffff;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    position: relative; /* Needed for absolute positioning of the "See More" overlay */
+}
+
+.tour h3 {
+    color: #333;
+    margin-bottom: 10px; /* Space between title and content */
+}
+
+.tour p {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 10px; /* Uniform spacing between paragraphs */
+}
+
+/* Images in the tour item */
+/* ... Other styles ... */
+
+.tour-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Spacing between images */
+    margin-bottom: 10px; /* Space below the image container */
+}
+
+.tour-image {
+    width: auto; /* Auto width for responsive sizing */
+    height: 100px; /* Fixed height for uniformity */
+    object-fit: cover;
+    border: none; /* Removes the border */
+    padding: 0; /* Resets padding if it’s there */
+    background-color: transparent; /* Ensure the image covers the area, may crop */
+}
+
+.more-images-overlay {
+    cursor: pointer;
+    display: inline-flex; /* Inline-flex so it doesn't force a new line */
+    align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+    color: white;
+    padding: 5px 10px; /* Padding inside */
+    border-radius: 5px; /* Rounded corners for aesthetic */
+    margin-left: 10px; /* Maintain consistent spacing from the images */
+}
+
+.modal-body {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Create as many columns as possible */
+    gap: 10px; /* Space between images */
+    justify-content: center; /* Center grid items horizontally */
+    align-items: center; /* Center grid items vertically */
+}
+
+.modal-body img {
+    width: 100%; /* Full width of the column */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: cover; /* Cover the area, may crop */
+    border-radius: 5px; /* Rounded corners for the images */
+}
+
+/* Adjust modal dialog size if needed */
+.modal-dialog {
+    max-width: 500px; /* Adjust width of modal as needed */
+}
+
+.tour-images a:hover, .tour-images a:focus {
+    color: white;
+    outline: none; /* Removes the focus outline */
+    /* Add other properties to style hover and focus states if needed */
 }

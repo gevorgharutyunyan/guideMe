@@ -17,14 +17,15 @@
 .guide-dashboard .btn {
     padding: 6px 12px;
     font-size: 14px;
-    border-radius: 4px;
+    border-radius: 6px;
     text-align: center;
+    color: #17a2b8;
     display: inline-block;
-    transition: background-color 0.3s ease;
+    background-color: lightyellow;
 }
 
 .guide-dashboard .btn-success {
-    background-color: #28a745; /* Green color for edit */
+    background-color: darkolivegreen; /* Green color for edit */
 }
 
 .guide-dashboard .btn-success:hover {
@@ -39,13 +40,6 @@
     background-color: #c82333;
 }
 
-.guide-dashboard .tour-images img {
-    width: 100%;
-    max-width: 200px; /* Adjust as needed */
-    height: auto;
-    margin-right: 10px;
-    border-radius: 5px;
-}
 
 .guide-dashboard .tour p {
     margin-bottom: 10px; /* Adds space between paragraphs */
@@ -101,4 +95,80 @@
     }
 }
 
+.guide-dashboard .tours .tour-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    background-color: aliceblue;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+}
 
+/* ... rest of your styles ... */
+
+/* Adjustments for the image gallery */
+.guide-dashboard .tour-images {
+    margin: 10px 0;
+    /* Add styles for your slider here, depending on the JS library you choose */
+}
+
+.guide-dashboard .tour-images img {
+    width: 100%; /* Ensure it's responsive */
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Shadow for depth */
+    margin-bottom: 10px; /* Space between images when not using a slider */
+}
+
+/* Styles for collapsible bookings and reviews sections */
+.guide-dashboard .bookings, .guide-dashboard .reviews {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: aliceblue;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+}
+/* Container for the images must be relative for absolute positioning of children */
+.guide-dashboard .tour-images {
+    position: relative;
+    display: flex; /* Images and overlay inline */
+    align-items: center;
+}
+
+/* Style for the images */
+.guide-dashboard .tour-image {
+    max-width: 200px; /* Example width, adjust as needed */
+    height: auto; /* Keep image aspect ratio */
+    border-radius: 5px;
+    margin-right: 10px; /* Spacing between images */
+}
+
+/* Last visible image with relative positioning for the overlay */
+.guide-dashboard .tour-image:last-child {
+    position: relative;
+    margin-right: 0; /* Remove margin to close the gap */
+}
+
+/* Absolute positioning of the overlay */
+.guide-dashboard .more-images-overlay {
+    position: absolute;
+    top: 0;
+    right: 0; /* Position the overlay to the top right corner of the last image */
+    width: 200px; /* Match the width of your images */
+    height: 100%; /* Stretch to the height of the image */
+    background: rgba(0,0,0,0.6); /* Semi-transparent overlay */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px; /* Match your image border radius */
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Remove spacing between images */
+.guide-dashboard .tour-image + .tour-image {
+    margin-left: -10px; /* Overlap images */
+}

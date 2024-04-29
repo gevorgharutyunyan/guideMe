@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block extra_styles %}
-<link rel="stylesheet" href="{% static 'css/posted_tours_by_guides.css' %}">
+<link rel="stylesheet" href="{% static 'css/posted_tours_by_guides.css'%}">
 {% endblock extra_styles %}
 {% block content %}
 <div class="available-tours">
@@ -13,7 +13,7 @@
 
     <ul>
         {% for tour in tours %}
-        <li class="tour-item">
+        <li class="tour-item{% if forloop.counter > limit %} d-none{% endif %}">
             <h3>{{ tour.title }}</h3>
             <p>{{ tour.description }}</p>
             <p>Price: ${{ tour.price }}</p>
@@ -21,28 +21,44 @@
             <p>End Date: {{ tour.availability_end }}</p>
             <p>Location: {{ tour.location }}</p>
 
-            {% if tour.images.all %}
-            <!-- Carousel -->
-            <div id="carousel{{ forloop.counter }}" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner">
-                    {% for image in tour.images.all %}
-                    <div class="carousel-item{% if forloop.first %} active{% endif %}">
-                        <img src="{{ image.image.url }}" class="d-block w-100" alt="Image of {{ tour.title }}">
+           <div class="tour-images">
+                <!-- Here, you could use a JS slider library like Slick or Swiper -->
+                {% for image in tour.images.all %}
+                <!-- Show only the first two images -->
+                {% if forloop.counter <= 4 %}
+                    <a href="{{ image.image.url }}" data-lightbox="tour-images-{{ tour.id }}" data-title="{{ tour.title }}">
+                        <img src="{{ image.image.url }}" alt="Image of {{ tour.title }}" class="tour-image img-fluid">
+                    </a>
+                {% endif %}
+                <!-- On the second image, add the overlay if there are more images -->
+                {% if forloop.counter == 4 and tour.images.count > 4 %}
+                    <div class="more-images-overlay" data-toggle="modal" data-target="#tourImagesModal{{ tour.id }}">
+                        <span>+{{ tour.images.count|add:"-4" }}</span>
                     </div>
-                    {% endfor %}
+                {% endif %}
+            {% empty %}
+                <p>No images available.</p>
+            {% endfor %}
+
+            <!-- Modal structure for all images -->
+            <div class="modal fade" id="tourImagesModal{{ tour.id }}" tabindex="-1" role="dialog" aria-labelledby="tourImagesModalLabel{{ tour.id }}" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="tourImagesModalLabel{{ tour.id }}">{{ tour.title }} Images</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            {% for image in tour.images.all %}
+                                <img src="{{ image.image.url }}" alt="Image of {{ tour.title }}" class="img-fluid mb-2">
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
-                <a class="carousel-control-prev" href="#carousel{{ forloop.counter }}" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#carousel{{ forloop.counter }}" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
             </div>
-            {% else %}
-            <p>No images available.</p>
-            {% endif %}
+
 
            {% if user.is_authenticated and tour.guide.user != user and user.profile.is_tourist %}
                 <a href="{% url 'tours:book_tour' tour.id %}" class="btn btn-info">Book This Tour</a>
@@ -57,12 +73,12 @@
             {% endif %}
         </li>
         {% empty %}
-        <p>No tours available at the moment.</p>
+            <p>No tours available at the moment.</p>
         {% endfor %}
     </ul>
+    {% if tours|length > limit %}
+    <button id="seeMoreTours" class="btn btn-info">See More Tours</button>
+    {% endif %}
 </div>
 {% endblock %}
-
-
-
 

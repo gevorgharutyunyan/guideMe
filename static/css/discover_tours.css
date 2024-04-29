@@ -62,22 +62,41 @@ button, .button {
 }
 
 /* Carousel styles */
-.carousel {
-    margin-top: 10px;
-}
-
-.carousel-item img {
-    max-height: 300px; /* Adjust this to fit your design */
-    margin: 0 auto; /* Center images */
+.carousel-control-prev,
+.carousel-control-next {
+    width: 5%; /* Smaller hit area for better user experience */
 }
 
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-    background-color: #333;
-    border-radius: 50%;
-    height: 30px;
-    width: 30px;
+    background-image: none; /* Remove default images */
 }
+
+.carousel-control-prev-icon:after,
+.carousel-control-next-icon:after {
+    content: '❮'; /* Use Unicode characters */
+    font-size: 24px; /* Larger icon size for better visibility */
+    color: black; /* Icon color */
+}
+
+.carousel-control-next-icon:after {
+    content: '❯'; /* Use Unicode characters */
+}
+
+/* Ensure controls are always visible */
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+    opacity: 1;
+}
+
+/* Style the indicators */
+.carousel-indicators li {
+    background-color: black; /* Indicator color */
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
 
 /* Modal styles */
 .modal-content {

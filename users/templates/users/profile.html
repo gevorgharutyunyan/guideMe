@@ -39,15 +39,46 @@
                     <p>Duration: {{ tour.duration }} hours</p>
                     <p>Location {{ tour.location }} </p>
                     <a href="{% url 'tours:edit' tour.id  %}">Edit</a>
-                        {% for image in tour.images.all %}
-                            <img src="{{ image.image.url }}" alt="Image of {{ tour.title }}" style="width: 50px; height: auto;">
-                        {% empty %}
-                            <p>No images available.</p>
-                        {% endfor %}
+                    {% if tour.images.all %}
+                        <div class="tour-images">
+                            {% for image in tour.images.all %}
+                                {% if forloop.counter <= 4 %}
+                                    <a href="{{ image.image.url }}" data-lightbox="tour-images-{{ tour.id }}" data-title="{{ tour.title }}">
+                                        <img src="{{ image.image.url }}" alt="Image of {{ tour.title }}" class="tour-image img-fluid">
+                                    </a>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        {% if tour.images.count > 4 %}
+                            <div class="more-images-overlay" data-toggle="modal" data-target="#tourImagesModal{{ tour.id }}">
+                                <span>+{{ tour.images.count|add:"-4" }}</span>
+                            </div>
+                        {% endif %}
+                        <div class="modal fade" id="tourImagesModal{{ tour.id }}" tabindex="-1" role="dialog" aria-labelledby="tourImagesModalLabel{{ tour.id }}">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="tourImagesModalLabel{{ tour.id }}">{{ tour.title }} Images</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        {% for image in tour.images.all %}
+                                            <img src="{{ image.image.url }}" alt="Image of {{ tour.title }}" class="img-fluid mb-2">
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <p>No images available.</p>
+                    {% endif %}
                 </div>
-            {% empty %}
-                <p>No tours listed yet.</p>
-            {% endfor %}
+                </div>
+        {% empty %}
+            <p>No tours listed yet.</p>
+        {% endfor %}
 
         </div>
     {% else %}
@@ -65,5 +96,26 @@
             {% endfor %}
         </div>
     {% endif %}
-</div>
+{% endblock %}
+{% block extra_scripts %}
+<script type="text/javascript">
+    // After the DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        // Find all overlays
+        var overlays = document.querySelectorAll('.more-images-overlay');
+        // Attach click event listeners to each overlay
+        overlays.forEach(function(overlay) {
+            overlay.addEventListener('click', function() {
+                // Retrieve the ID from the data-target attribute
+                var target = this.getAttribute('data-target');
+                // Use the ID to find the corresponding modal
+                var modal = document.querySelector(target);
+                if (modal) {
+                    // Show the modal
+                    $(modal).modal('show'); // Bootstrap requires jQuery for this
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}

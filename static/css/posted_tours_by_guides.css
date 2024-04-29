@@ -1,4 +1,8 @@
 /* Style for the Available Tours List */
+.available-tours .tour-item{
+    background-color: aliceblue; /* Theme color for headings */
+    margin-bottom: 20px; /* Space below the heading */
+}
 .available-tours h2 {
     color: #007bff; /* Theme color for headings */
     margin-bottom: 20px; /* Space below the heading */
@@ -13,69 +17,87 @@
     background: #f9f9f9; /* Light grey background */
     border: 1px solid #ddd; /* Subtle border */
     padding: 20px; /* Padding inside each list item */
-    margin-bottom: 10px; /* Space between tours */
+    margin-bottom: 20px; /* Space between tours */
     border-radius: 8px; /* Rounded corners for the list items */
+    position: relative; /* Position relative for absolute child elements */
 }
 
 .available-tours h3 {
     color: #333; /* Dark color for tour title */
-    margin-top: 0; /* No margin above the title */
 }
 
 .available-tours p {
     color: #666; /* Grey color for text */
-    margin: 5px 0; /* Small margin for paragraph spacing */
+    margin-bottom: 10px; /* Uniform margin for all paragraphs */
 }
 
-.available-tours img {
-    width: 100%; /* Full width images */
-    max-width: 300px; /* Limit maximum width */
+
+/* Tour Images Displayed on the Page */
+.tour-images {
+    display: flex;
+    align-items: center; /* Align images vertically */
+    justify-content: flex-start; /* Align images to the left */
+    gap: 10px; /* Spacing between images */
+    margin-bottom: 10px; /* Space below the image container */
+    flex-wrap: wrap; /* Allow images and overlay to wrap if needed */
+}
+
+.tour-image {
+    max-height: 200px; /* Control the size of the image by height */
+    max-width: 100%; /* Ensure the image is not wider than its container */
     height: auto; /* Maintain aspect ratio */
-    margin-top: 10px; /* Space above images */
+    width: auto; /* Maintain aspect ratio */
 }
 
-.available-tours button {
-    background-color: #dc3545; /* Red color for buttons */
+/* "See More" Overlay Styling */
+.more-images-overlay {
+    background: rgba(0,0,0,0.6); /* Semi-transparent black background */
     color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
+    padding: 10px 20px; /* Increase padding for a larger clickable area */
     cursor: pointer;
-    margin-top: 10px;
+    border-radius: 5px; /* Rounded corners for the overlay */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem; /* Adjust font size as needed */
+    /* Remove position absolute and top/right properties */
 }
 
-.available-tours button:hover {
-    background-color: #c82333; /* Darker shade on hover */
+/* Modal Body Styling */
+.modal-body {
+    display: flex;
+    flex-direction: column; /* Stack images in a single column */
+    align-items: center; /* Center images horizontally */
+    gap: 10px; /* Spacing between images */
+    padding: 15px; /* Padding inside the modal body */
 }
 
-.available-tours a {
-    display: inline-block;
-    background-color: #28a745; /* Green background for links */
-    color: white;
-    padding: 8px 16px;
-    border-radius: 4px;
-    text-decoration: none;
-    margin-bottom: 20px; /* Space below the link */
+/* Modal Images Styling */
+.modal-body img {
+    max-height: 150px; /* Smaller height for modal images */
+    max-width: 100%; /* Max width to fit modal */
+    width: auto; /* Maintain aspect ratio */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 5px; /* Rounded corners for images */
 }
 
-.available-tours form {
-    display: inline; /* Inline display for forms */
+/* Adjust modal dialog size if needed */
+.modal-dialog {
+    max-width: 500px; /* Adjust width of modal as needed */
 }
 
-.carousel-control-prev, .carousel-control-next {
-    width: 1%; /* Smaller width for buttons */
+/* Hover effects for buttons */
+.available-tours button:hover,
+.available-tours a:hover {
+    opacity: 0.9; /* Slight transparency on hover */
 }
 
-.carousel-control-prev-icon, .carousel-control-next-icon {
-    background-size: 20%, 20%; /* Adjust size to fit within buttons */
-}
-
-.carousel-inner .carousel-item img {
-    max-height: 200px; /* Adjust based on your preference */
-    object-fit: contain; /* Keeps the aspect ratio and makes sure the image fits into the carousel */
-    width: 50%; /* Ensures the image takes the full width of the carousel */
-}
-
-.carousel-item {
-    text-align: center; /* Center the images within the carousel */
+/* Adjustments for small screens */
+@media (max-width: 768px) {
+    .tour-images {
+        justify-content: center; /* Center images on small screens */
+    }
+    .more-images-overlay {
+        margin-top: 10px; /* Add space between images and overlay on small screens */
+    }
 }

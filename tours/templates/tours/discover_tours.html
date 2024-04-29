@@ -23,11 +23,13 @@
         <h3>{{ tour.title }}</h3>
         {% if tour.images.all %}
             <!-- Carousel -->
-            <div id="carousel{{ forloop.counter }}" class="carousel slide" data-ride="carousel">
+            <div id="carousel{{ forloop.counter }}" class="carousel" data-ride="carousel">
                 <div class="carousel-inner">
                     {% for image in tour.images.all %}
                     <div class="carousel-item{% if forloop.first %} active{% endif %}">
-                        <img src="{{ image.image.url }}" class="d-block w-100" alt="Image of {{ tour.title }}">
+                        <a href="{{ image.image.url }}" data-lightbox="tour-images-{{ tour.id }}" data-title="{{ tour.title }}">
+                            <img src="{{ image.image.url }}" alt="Image of {{ tour.title }}" class="tour-image img-fluid">
+                        </a>
                     </div>
                     {% endfor %}
                 </div>
