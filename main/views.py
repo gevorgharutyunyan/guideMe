@@ -1,6 +1,9 @@
 from django.shortcuts import redirect, render
 from django.shortcuts import render
 from users.models import UserProfile
+from tours.models import Tour
+
+
 def home_view(request):
     """
     Home view that checks user type and redirects accordingly.
@@ -19,4 +22,5 @@ def home_view(request):
         except UserProfile.DoesNotExist:
             return redirect('users:choose_role')  # Redirect to choose role if profile does not exist
 
-    return render(request, 'main/home.html')
+    tours = Tour.objects.all()  # Fetch all tour objects from the database
+    return render(request, 'main/home.html', {'tours': tours})

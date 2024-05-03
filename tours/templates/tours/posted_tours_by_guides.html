@@ -16,7 +16,7 @@
         <li class="tour-item{% if forloop.counter > limit %} d-none{% endif %}">
             <h3>{{ tour.title }}</h3>
             <p>{{ tour.description }}</p>
-            <p>Price: ${{ tour.price }}</p>
+            <p>Price: {{ tour.price }} AMD</p>
             <p>Start Date: {{ tour.availability_start }}</p>
             <p>End Date: {{ tour.availability_end }}</p>
             <p>Location: {{ tour.location }}</p>

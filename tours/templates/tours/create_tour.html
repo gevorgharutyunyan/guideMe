@@ -11,9 +11,9 @@
     {% csrf_token %}
     {{ form.as_p }}
     <!-- Image upload interface -->
-<label for="image-input" class="button">Choose Images</label>
-<input type="file" name="images" id="image-input" multiple style="display: none;">
-<ul id="file-list"></ul>  <!-- Placeholder for displaying selected file names -->
+    <label for="image-input" class="button">Choose Images</label>
+    <input type="file" name="images" id="image-input" multiple style="display: none;">
+    <ul id="file-list"></ul>
 
     <button type="submit" class="button">Submit</button>
     <!-- Human-readable location input -->

@@ -19,10 +19,8 @@ class BookingForm(forms.ModelForm):
 class TourForm(forms.ModelForm):
     class Meta:
         model = Tour
-        fields = ['title', 'description', 'price', 'duration', 'availability_start', 'availability_end', 'latitude', 'longitude', 'location']
+        fields = ['title', 'description', 'price', 'max_group_size','languages','duration','status', 'latitude', 'longitude', 'location']
         widgets = {
-            'availability_start': forms.DateInput(attrs={'type': 'date'}),
-            'availability_end': forms.DateInput(attrs={'type': 'date'}),
             'latitude': forms.HiddenInput(),
             'longitude': forms.HiddenInput(),
             'location': forms.TextInput(attrs={'placeholder': 'Enter a location'}),

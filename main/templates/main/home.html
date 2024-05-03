@@ -1,26 +1,51 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Tourism Platform{% endblock title %}
-
 {% block extra_styles %}
     {{ block.super }}
-    <!-- Additional CSS files can be added here if needed -->
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 {% endblock extra_styles %}
 
 {% block content %}
-<main class="container">
-    <div class="grid">
-        <section>
-            <hgroup>
-                <h2>Explore the World</h2>
-                <h3>Your adventure starts here</h3>
-            </hgroup>
-            <p>Welcome to our tourism platform where adventure awaits at every corner. Browse through a wide range of tours, find your perfect match, and start your journey!</p>
-            <figure>
-                <img src="{% static 'img/web_page_image.webp' %}" alt="Adventure and Exploration">
-                <figcaption>An exciting journey awaits.</figcaption>
-            </figure>
-        </section>
+<div class="background-image"></div> <!-- Background image layer -->
+<main class="container mt-5">
+    <h2 class="text-center mb-4">Explore the World<br>Your adventure starts here</h2>
+    <p class="text-center mb-5">Welcome to our tourism platform where adventure awaits at every corner. Browse through a wide range of tours, find your perfect match, and start your journey!</p>
+
+    <!-- Search Form -->
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-6">
+            <form action="{% url 'users:login' %}" method="get">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search tours..." name="search">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="submit">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tour Cards -->
+    <div class="row">
+        {% for tour in tours %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                {% if tour.images.all %}
+                <img src="{{ tour.images.all.first.image.url }}" class="card-img-top" alt="{{ tour.title }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ tour.title }}</h5>
+                    <p class="card-text">{{ tour.description }}</p>
+                    <p class="card-text">Price: {{ tour.price }} AMD</p>
+                    <p class="card-text">Start Date: {{ tour.availability_start }}</p>
+                    <p class="card-text">End Date: {{ tour.availability_end }}</p>
+                    <p class="card-text">Location: {{ tour.location }}</p>
+                    <a href="{% url 'users:login' %}" class="btn btn-primary">Book Now</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </main>
 {% endblock content %}

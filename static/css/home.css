@@ -1,55 +1,30 @@
-body, html {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: #fff;
+.background-image {
+    background-image: url('/static/img/web_page_image.webp');
+    background-size: cover;
+    background-position: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0.5;
+    z-index: -1;
 }
 
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 15px; /* Add some padding on the sides */
+.card {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: 0.3s;
 }
 
-.navbar-section {
-    display: flex;
-    align-items: center;
+.card:hover {
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
 }
 
-.logo img {
-    height: 50px; /* Adjust to match the desired size */
+.card-img-top {
+    width: 100%;
+    height: auto;
 }
 
-.nav-links a,
-.auth-links a {
-    text-decoration: none;
-    color: #007bff;
-    margin-left: 15px;
-    padding: 5px 10px;
+.card-body {
+    padding: 15px;
 }
-
-.nav-links a:hover,
-.auth-links a:hover {
-    text-decoration: underline;
-}
-
-.profile-icon {
-    height: 30px; /* Adjust to match the desired size */
-    width: auto;
-    border-radius: 50%;
-    margin-right: 15px;
-}
-
-.auth-links {
-    display: flex;
-    align-items: center;
-}
-
-/* Additional styles for your main content */
-.hero {
-    padding: 50px 20px;
-    text-align: center;
-}
-
-/* Rest of your CSS for the welcome page */
