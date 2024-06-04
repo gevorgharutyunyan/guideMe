@@ -152,3 +152,25 @@ def add_review(request, tour_id):
     else:
         form = ReviewForm()
     return render(request, 'tours/add_review.html', {'form': form, 'tour': tour})
+
+
+def search_tours(request):
+    query = request.GET.get('search_tours', '')
+    tours = Tour.objects.filter(title__icontains=query)  # Simple case-insensitive search in titles
+    price_low = request.GET.get('priceLow')
+    price_high = request.GET.get('priceHigh')
+    minimum_age = request.GET.get('minimumAge')
+    location = request.GET.get('locationFilter')
+
+    tours = Tour.objects.filter(title__icontains=query)
+    if price_low:
+        tours = tours.filter(price__gte=price_low)
+    if price_high:
+        tours = tours.filter(price__lte=price_high)
+    if minimum_age:
+        tours = tours.filter(minimum_age__gte=minimum_age)
+    if location:
+        tours = tours.filter(location__icontains=location)
+
+
+    return render(request, 'tours/search_results.html', {'tours': tours})

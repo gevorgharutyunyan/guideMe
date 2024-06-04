@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Search Tours{% endblock title %}
+
+{% block extra_styles %}
+{{ block.super }}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<style>
+    .filter-sidebar {
+        border-right: 1px solid #ccc;
+        height: 100vh;
+        padding: 20px;
+    }
+    .content-area {
+        padding: 20px;
+    }
+    .tour-card {
+        margin-bottom: 20px;
+    }
+    .card-img-top {
+    width: 100%;
+    height: 200px;  /* Adjust height as needed */
+    object-fit: cover;  /* Ensures the image covers the area well */
+}
+
+.card {
+    margin-bottom: 20px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Filter Sidebar -->
+        <div class="col-md-3 filter-sidebar">
+            <h4>Filters</h4>
+            <form>
+                <div class="form-group">
+                    <label for="priceLow">Price Range Low</label>
+                    <input type="number" class="form-control" id="priceLow" name="priceLow" placeholder="Min Price">
+                    <label for="priceHigh">Price Range High</label>
+                    <input type="number" class="form-control" id="priceHigh" name="priceHigh" placeholder="Max Price">
+                </div>
+                <div class="form-group">
+                    <label for="regionSelect">Region</label>
+                    <select class="form-control" id="regionSelect" name="region">
+                        <option>East</option>
+                        <option>West</option>
+                        <option>North</option>
+                        <option>South</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="ratingSelect">Guide Rating</label>
+                    <select class="form-control" id="ratingSelect" name="rating">
+                        <option>1 Star</option>
+                        <option>2 Stars</option>
+                        <option>3 Stars</option>
+                        <option>4 Stars</option>
+                        <option>5 Stars</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Apply Filters</button>
+            </form>
+        </div>
+
+        <!-- Content Area -->
+        <div class="col-md-9 content-area">
+            <h3>Search Results</h3>
+            {% for tour in tours %}
+            <div class="card tour-card">
+                {% if tour.images.all %}
+                <img src="{{ tour.images.all.first.image.url }}" class="card-img-top" alt="{{ tour.title }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ tour.title }}</h5>
+                    <p class="card-text">{{ tour.description }}</p>
+                    <p class="card-text">Price: {{ tour.price }}</p>
+                    <a href="{% url 'users:login' %}" class="btn btn-primary">Book Now</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
