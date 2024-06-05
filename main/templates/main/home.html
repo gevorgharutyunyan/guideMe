@@ -4,6 +4,7 @@
     {{ block.super }}
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
 {% endblock extra_styles %}
 
 {% block content %}
@@ -12,17 +13,43 @@
     <h2 class="text-center mb-4">Explore the World<br>Your adventure starts here</h2>
     <p class="text-center mb-5">Welcome to our tourism platform where adventure awaits at every corner. Browse through a wide range of tours, find your perfect match, and start your journey!</p>
 
-    <!-- Search Form -->
-    <div class="row justify-content-center mb-4">
-        <div class="col-md-6">
-            <form action="{% url 'users:login' %}" method="get">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search tours..." name="search">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="submit">Search</button>
+    <!-- Search Form and Filter Panel -->
+    <div class="row justify-content-center mb-4 search-bar">
+        <div class="col-md-10">
+            <div class="filter-panel">
+                <form action="{% url 'users:login' %}" method="get">
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="checkInDate">Check-in date</label>
+                            <input type="date" class="form-control" id="checkInDate" name="checkin_date">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="checkOutDate">Check-out date</label>
+                            <input type="date" class="form-control" id="checkOutDate" name="checkout_date">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="hotel">Hotel</label>
+                            <select id="hotel" class="form-control" name="hotel">
+                                <option selected>Choose...</option>
+                                <option value="1">Hotel 1</option>
+                                <option value="2">Hotel 2</option>
+                                <!-- Add more options as needed -->
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="adults">Adults</label>
+                            <input type="number" class="form-control" id="adults" name="adults" min="1" value="1">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="children">Children</label>
+                            <input type="number" class="form-control" id="children" name="children" min="0" value="0">
+                        </div>
                     </div>
-                </div>
-            </form>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -30,9 +57,11 @@
     <div class="row">
         {% for tour in tours %}
         <div class="col-md-4 mb-4">
-            <div class="card">
+            <div class="card tour-card">
                 {% if tour.images.all %}
                 <img src="{{ tour.images.all.first.image.url }}" class="card-img-top" alt="{{ tour.title }}">
+                {% else %}
+                <img src="{% static 'path/to/default/image.jpg' %}" class="card-img-top" alt="{{ tour.title }}">
                 {% endif %}
                 <div class="card-body">
                     <h5 class="card-title">{{ tour.title }}</h5>
@@ -41,7 +70,8 @@
                     <p class="card-text">Start Date: {{ tour.availability_start }}</p>
                     <p class="card-text">End Date: {{ tour.availability_end }}</p>
                     <p class="card-text">Location: {{ tour.location }}</p>
-                    <a href="{% url 'users:login' %}" class="btn btn-primary">Book Now</a>
+                    <a href="{% url 'users:login' %}?next={% url 'tours:book_tour' tour.id %}" class="btn btn-primary">Book Now</a>
+
                 </div>
             </div>
         </div>

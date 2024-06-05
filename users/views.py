@@ -45,12 +45,19 @@ def profile_view(request, username):
 class CustomLoginView(LoginView):
     template_name = 'registration/login.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['next'] = self.request.GET.get('next', '')
+        return context
+
     def get_success_url(self):
+        next_url = self.request.POST.get('next') or self.request.GET.get('next')
+        if next_url:
+            return next_url
         if self.request.user.profile.is_guide:
             return reverse_lazy('tours:guides_dashboard')
         else:
-            return reverse_lazy('tours:discover')  # Update with your actual URL name
-
+            return reverse_lazy('tours:discover')
 
 class CustomLogoutView(LogoutView):
     next_page = reverse_lazy('main:home')

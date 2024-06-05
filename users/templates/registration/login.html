@@ -1,7 +1,8 @@
 {% block content %}
     <h2>Login</h2>
-    <form method="POST" action="{% url 'users:login' %}">
+    <form method="post" action="{% url 'users:login' %}">
         {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
         {{ form.as_p }}
         <button type="submit">Login</button>
         <a href="{% url 'account_login' %}">Login with Gmail</a>
