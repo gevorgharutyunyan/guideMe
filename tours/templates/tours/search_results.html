@@ -35,31 +35,12 @@
         <!-- Filter Sidebar -->
         <div class="col-md-3 filter-sidebar">
             <h4>Filters</h4>
-            <form>
+            <form method="get">
                 <div class="form-group">
                     <label for="priceLow">Price Range Low</label>
-                    <input type="number" class="form-control" id="priceLow" name="priceLow" placeholder="Min Price">
+                    <input type="number" class="form-control" id="priceLow" name="priceLow" placeholder="Min Price" value="{{ price_low }}">
                     <label for="priceHigh">Price Range High</label>
-                    <input type="number" class="form-control" id="priceHigh" name="priceHigh" placeholder="Max Price">
-                </div>
-                <div class="form-group">
-                    <label for="regionSelect">Region</label>
-                    <select class="form-control" id="regionSelect" name="region">
-                        <option>East</option>
-                        <option>West</option>
-                        <option>North</option>
-                        <option>South</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="ratingSelect">Guide Rating</label>
-                    <select class="form-control" id="ratingSelect" name="rating">
-                        <option>1 Star</option>
-                        <option>2 Stars</option>
-                        <option>3 Stars</option>
-                        <option>4 Stars</option>
-                        <option>5 Stars</option>
-                    </select>
+                    <input type="number" class="form-control" id="priceHigh" name="priceHigh" placeholder="Max Price" value="{{ price_high }}">
                 </div>
                 <button type="submit" class="btn btn-primary">Apply Filters</button>
             </form>
@@ -77,7 +58,7 @@
                     <h5 class="card-title">{{ tour.title }}</h5>
                     <p class="card-text">{{ tour.description }}</p>
                     <p class="card-text">Price: {{ tour.price }}</p>
-                    <a href="{% url 'users:login' %}" class="btn btn-primary">Book Now</a>
+                    <a href="{% url 'tours:book_tour' tour.id %}" class="btn btn-primary">Book Now</a>
                 </div>
             </div>
             {% endfor %}

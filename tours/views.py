@@ -6,7 +6,11 @@ from django.views.decorators.http import require_POST
 from users.models import UserProfile
 from .models import Booking
 from django.http import HttpResponseForbidden
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from .forms import ReviewForm
+from decimal import Decimal
+
 def tour_list(request):
     tours = Tour.objects.all()  # You can add filtering logic here
     user_boolean = request.user.profile.is_guide
@@ -154,23 +158,55 @@ def add_review(request, tour_id):
     return render(request, 'tours/add_review.html', {'form': form, 'tour': tour})
 
 
+@login_required
 def search_tours(request):
     query = request.GET.get('search_tours', '')
-    tours = Tour.objects.filter(title__icontains=query)  # Simple case-insensitive search in titles
     price_low = request.GET.get('priceLow')
     price_high = request.GET.get('priceHigh')
-    minimum_age = request.GET.get('minimumAge')
-    location = request.GET.get('locationFilter')
+    region = request.GET.get('region')
+    adults = request.GET.get('adults')
+    children = request.GET.get('children')
 
-    tours = Tour.objects.filter(title__icontains=query)
-    if price_low:
+    print(f"Price Low (raw): {price_low}")
+    print(f"Price High (raw): {price_high}")
+
+    # Convert price_low and price_high to Decimal if they are provided
+    try:
+        price_low = Decimal(price_low) if price_low else None
+    except:
+        price_low = None
+
+    try:
+        price_high = Decimal(price_high) if price_high else None
+    except:
+        price_high = None
+
+    print(f"Price Low (converted): {price_low}")
+    print(f"Price High (converted): {price_high}")
+
+    tours = Tour.objects.all()
+
+    if query:
+        tours = tours.filter(title__icontains=query)
+    if price_low is not None:
         tours = tours.filter(price__gte=price_low)
-    if price_high:
+    if price_high is not None:
         tours = tours.filter(price__lte=price_high)
-    if minimum_age:
-        tours = tours.filter(minimum_age__gte=minimum_age)
-    if location:
-        tours = tours.filter(location__icontains=location)
+    if region:
+        tours = tours.filter(location__icontains=region)
+    if adults:
+        tours = tours.filter(minimum_age__gte=adults)
+    if children:
+        tours = tours.filter(minimum_age__lte=children)
 
+    for tour in tours:
+        print(f"Tour: {tour.title}, Price: {tour.price}")
 
-    return render(request, 'tours/search_results.html', {'tours': tours})
+    return render(request, 'tours/search_results.html', {
+        'tours': tours,
+        'price_low': price_low,
+        'price_high': price_high,
+        'region': region,
+        'adults': adults,
+        'children': children
+    })

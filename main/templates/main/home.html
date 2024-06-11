@@ -4,7 +4,6 @@
     {{ block.super }}
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
 {% endblock extra_styles %}
 
 {% block content %}
@@ -17,36 +16,19 @@
     <div class="row justify-content-center mb-4 search-bar">
         <div class="col-md-10">
             <div class="filter-panel">
-                <form action="{% url 'users:login' %}" method="get">
+                <form id="search-form" method="get">
                     <div class="form-row">
                         <div class="form-group col-md-3">
-                            <label for="checkInDate">Check-in date</label>
-                            <input type="date" class="form-control" id="checkInDate" name="checkin_date">
+                            <label for="priceLow">Minimum price</label>
+                            <input type="number" class="form-control" id="priceLow" name="priceLow">
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="checkOutDate">Check-out date</label>
-                            <input type="date" class="form-control" id="checkOutDate" name="checkout_date">
-                        </div>
-                        <div class="form-group col-md-2">
-                            <label for="hotel">Hotel</label>
-                            <select id="hotel" class="form-control" name="hotel">
-                                <option selected>Choose...</option>
-                                <option value="1">Hotel 1</option>
-                                <option value="2">Hotel 2</option>
-                                <!-- Add more options as needed -->
-                            </select>
-                        </div>
-                        <div class="form-group col-md-2">
-                            <label for="adults">Adults</label>
-                            <input type="number" class="form-control" id="adults" name="adults" min="1" value="1">
-                        </div>
-                        <div class="form-group col-md-2">
-                            <label for="children">Children</label>
-                            <input type="number" class="form-control" id="children" name="children" min="0" value="0">
+                            <label for="priceHigh">Maximum Price</label>
+                            <input type="number" class="form-control" id="priceHigh" name="priceHigh">
                         </div>
                     </div>
                     <div class="text-center">
-                        <button type="submit" class="btn btn-primary">Search</button>
+                        <button type="submit" class="btn btn-primary" id="search-button">Search</button>
                     </div>
                 </form>
             </div>
@@ -71,11 +53,19 @@
                     <p class="card-text">End Date: {{ tour.availability_end }}</p>
                     <p class="card-text">Location: {{ tour.location }}</p>
                     <a href="{% url 'users:login' %}?next={% url 'tours:book_tour' tour.id %}" class="btn btn-primary">Book Now</a>
-
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
 </main>
+<script>
+    document.getElementById('search-button').addEventListener('click', function(e) {
+        e.preventDefault();
+        let form = document.getElementById('search-form');
+        let params = new URLSearchParams(new FormData(form)).toString();
+        let nextUrl = `{% url 'tours:search_tours' %}?${params}`;
+        window.location.href = `{% url 'users:login' %}?next=${encodeURIComponent(nextUrl)}`;
+    });
+</script>
 {% endblock content %}
