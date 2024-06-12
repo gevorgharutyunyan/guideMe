@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Tour, TourImage
+from .models import Tour, TourImage, Wishlist
 from .forms import BookingForm, TourForm, TourImageFormSet
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
@@ -30,6 +30,11 @@ def book_tour(request, tour_id):
         form = BookingForm()
     return render(request, 'tours/book_tour.html', {'form': form, 'tour': tour})
 
+@login_required
+def cancel_booking(request, booking_id):
+    booking = get_object_or_404(Booking, id=booking_id, user=request.user.profile)
+    booking.delete()
+    return redirect('tours:tourist_bookings')
 
 @login_required
 def create_tour(request):
@@ -67,7 +72,6 @@ def create_tour(request):
 
     return render(request, 'tours/create_tour.html', {'form': form, 'formset': formset})
 
-
 def guides_dashboard_view(request):
     # Ensure only guides can access this view
     if not request.user.profile.is_guide:
@@ -86,7 +90,6 @@ def discover_tours_view(request):
     # featured_tours = Tour.objects.filter(is_featured=True)  # Example attribute
     tours = Tour.objects.all()
     return render(request, 'tours/discover_tours.html', { 'tours': tours}) #'featured_tours': featured_tours,
-
 
 @login_required
 def edit_tour(request, tour_id):
@@ -141,7 +144,6 @@ def bookings_in_guide_profile(request):
     my_tours = request.user.profile.tours.all()
     return render(request, 'tours/bookings_in_guide_profile.html', {'my_tours': my_tours})
 
-
 @login_required
 def add_review(request, tour_id):
     tour = get_object_or_404(Tour, pk=tour_id)
@@ -156,7 +158,6 @@ def add_review(request, tour_id):
     else:
         form = ReviewForm()
     return render(request, 'tours/add_review.html', {'form': form, 'tour': tour})
-
 
 @login_required
 def search_tours(request):
@@ -210,3 +211,16 @@ def search_tours(request):
         'adults': adults,
         'children': children
     })
+
+
+@login_required
+def add_to_wishlist(request, tour_id):
+    tour = get_object_or_404(Tour, id=tour_id)
+    wishlist, created = Wishlist.objects.get_or_create(user=request.user.profile, tour=tour)
+    print(wishlist, created )
+    return redirect('tours:tourist_wishlist')
+
+@login_required
+def tourist_wishlist(request):
+    wishlist_tours = request.user.profile.wishlist.all()
+    return render(request, 'tours/tourist_wishlist.html', {'wishlist_tours': wishlist_tours})

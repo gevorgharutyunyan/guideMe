@@ -1,0 +1,34 @@
+<!-- tourist_wishlist.html -->
+{% extends "base.html" %}
+{% load static %}
+{% block extra_styles %}
+<link rel="stylesheet" href="{% static 'css/tourist_wishlist.css' %}">
+{% endblock extra_styles %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Your Wishlist</h2>
+    <div class="row">
+        {% for wishlist in wishlist_tours %}
+        <div class="col-md-4 mb-4">
+            <div class="card tour-card">
+                {% if wishlist.tour.images.all %}
+                <img src="{{ wishlist.tour.images.all.first.image.url }}" class="card-img-top" alt="{{ wishlist.tour.title }}">
+                {% else %}
+                <img src="{% static 'path/to/default/image.jpg' %}" class="card-img-top" alt="{{ wishlist.tour.title }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ wishlist.tour.title }}</h5>
+                    <p class="card-text">{{ wishlist.tour.description }}</p>
+                    <p class="card-text">Price: {{ wishlist.tour.price }} AMD</p>
+                    <p class="card-text">Start Date: {{ wishlist.tour.availability_start }}</p>
+                    <p class="card-text">End Date: {{ wishlist.tour.availability_end }}</p>
+                    <p class="card-text">Location: {{ wishlist.tour.location }}</p>
+                    <a href="{% url 'tours:book_tour' wishlist.tour.id %}" class="btn btn-primary">Book Now</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+>

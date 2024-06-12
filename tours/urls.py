@@ -15,5 +15,8 @@ urlpatterns = [
     path('<int:tour_id>/book/', views.book_tour, name='book_tour'),
     path('<int:tour_id>/add_review/', views.add_review, name='add_review'),# For booking a specific tour
     path('search_tours/', views.search_tours, name='search_tours'),
+    path('cancel_booking/<int:booking_id>/', views.cancel_booking, name='cancel_booking'),
+    path('wishlist/add/<int:tour_id>/', views.add_to_wishlist, name='add_to_wishlist'),
+    path('wishlist/', views.tourist_wishlist, name='tourist_wishlist'),
 
 ]

@@ -49,7 +49,6 @@ class Booking(models.Model):
     def __str__(self):
         return f"{self.tour.title} by {self.user.user.username} on {self.booking_date}"
 
-
 class Review(models.Model):
     tour = models.ForeignKey(Tour, on_delete=models.CASCADE, related_name='reviews')
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='tour_reviews')
@@ -72,3 +71,7 @@ class Review(models.Model):
 
     def __str__(self):
         return f'Review by {self.author.username} for {self.tour.title}'
+
+class Wishlist(models.Model):
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='wishlist')
+    tour = models.ForeignKey(Tour, on_delete=models.CASCADE)

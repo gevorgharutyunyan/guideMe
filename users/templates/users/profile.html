@@ -82,18 +82,11 @@
 
         </div>
     {% else %}
-        <a href="{% url 'tours:tourist_bookings' %}">My Bookings</a>
+        <h2>Wish List</h2>
+        <a href="{% url 'tours:tourist_wishlist' %}">Show wishlist</a>
+        <h2>My Bookings</h2>
+        <a href="{% url 'tours:tourist_bookings' %}">Show bookings</a>
         <div class="tourist-section">
-            <h2>My Bookings</h2>
-            {% for booking in user.profile.bookings.all %}
-                <div class="booking">
-                    <h3>{{ booking.tour.title }}</h3>
-                    <p>Booked for: {{ booking.booking_date }}</p>
-                    <!-- Add more details here -->
-                </div>
-            {% empty %}
-                <p>No bookings made yet.</p>
-            {% endfor %}
         </div>
     {% endif %}
 {% endblock %}

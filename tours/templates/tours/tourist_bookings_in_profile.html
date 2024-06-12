@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% block extra_styles  %}
+{% block extra_styles %}
 <link rel="stylesheet" href="{% static 'css/bookings_in_tourist_profile.css' %}">
 {% endblock %}
 
@@ -10,7 +10,15 @@
     {% for booking in booked_tours %}
     <div class="booking">
         <h3>{{ booking.tour.title }}</h3>
+        <p>{{ booking.tour.description }}</p>
+        <p>Price: {{ booking.tour.price }} AMD</p>
+        <p>Duration: {{ booking.tour.duration }} hours</p>
+        <p>Location {{ booking.tour.location }} </p>
         <p>Booked for: {{ booking.booking_date|date:"Y-m-d" }}</p>  <!-- Formatting date -->
+        <form action="{% url 'tours:cancel_booking' booking.id %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Cancel</button>
+        </form>
     </div>
     {% empty %}
     <p>No bookings made yet.</p>
