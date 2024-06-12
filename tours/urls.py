@@ -18,5 +18,6 @@ urlpatterns = [
     path('cancel_booking/<int:booking_id>/', views.cancel_booking, name='cancel_booking'),
     path('wishlist/add/<int:tour_id>/', views.add_to_wishlist, name='add_to_wishlist'),
     path('wishlist/', views.tourist_wishlist, name='tourist_wishlist'),
+    path('remove_wishlist/<int:tour_id>/', views.remove_wishlist, name='remove_wishlist'),
 
 ]

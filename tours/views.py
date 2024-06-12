@@ -224,3 +224,8 @@ def add_to_wishlist(request, tour_id):
 def tourist_wishlist(request):
     wishlist_tours = request.user.profile.wishlist.all()
     return render(request, 'tours/tourist_wishlist.html', {'wishlist_tours': wishlist_tours})
+
+def remove_wishlist(request, tour_id):
+    wishlist_item = get_object_or_404(Wishlist, user=request.user.profile, tour_id=tour_id)
+    wishlist_item.delete()
+    return redirect('tours:tourist_wishlist')

@@ -24,6 +24,7 @@
                     <p class="card-text">End Date: {{ wishlist.tour.availability_end }}</p>
                     <p class="card-text">Location: {{ wishlist.tour.location }}</p>
                     <a href="{% url 'tours:book_tour' wishlist.tour.id %}" class="btn btn-primary">Book Now</a>
+                    <a href="{% url 'tours:remove_wishlist' wishlist.tour.id %}" class="btn btn-outline-danger"> Remove </a>
                 </div>
             </div>
         </div>
